@@ -1,0 +1,27 @@
+div ul li a{
+  font-family: 'Kantumruy', sans-serif;
+}
+
+h4{
+  font-family: 'Dangrek', cursive;
+}
+
+.sidebar-header{
+    font-family: 'Dangrek', cursive;
+
+}
+label,input,select,option{
+  font-family: 'Kantumruy', sans-serif;
+}
+
+div a, div button{
+  font-family: 'Kantumruy', sans-serif;
+}
+
+.card-title{
+  font-family: 'Dangrek', cursive;
+}
+
+.customer-name{
+  font-family: 'Kantumruy', sans-serif;
+}
