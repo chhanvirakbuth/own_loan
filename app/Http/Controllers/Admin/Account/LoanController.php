@@ -12,6 +12,9 @@ use App\Enums\GenderEnum;
 use App\Enums\StatusEnum;
 
 use App\Admin\Address\Provinces;
+use App\Admin\Address\Districts;
+use App\Admin\Address\Communes;
+use App\Admin\Address\Villages;
 
 use App\Admin\Customer\Occupations;
 use App\Admin\Customer\Statuses;
@@ -180,4 +183,76 @@ class LoanController extends Controller
       return json_encode($rate);
     }
 
+    // view edit loans
+    public function edit($id){
+      $loans=Loans::findOrFail($id);
+      $provinces=Provinces::where('actived',1)->get();
+      $districts=Districts::where('province_id',$loans->people->province->id)->get();
+      $communes=Communes::where('province_id',$loans->people->province->id)
+                ->where('district_id',$loans->people->district->id)->get();
+      $villages=Villages::where('province_id',$loans->people->province->id)
+                ->where('district_id',$loans->people->district->id)
+                ->where('commune_id',$loans->people->commune->id)->get();
+      $occupations=Occupations::where('actived',1)->get();
+      $statuses=Statuses::all();
+      $theme=Theme::findOrFail(1);
+      $account_type_items=AccountTypeItems::where('account_type_id',1)->get();
+      return view('admin.loan.edit')->with('loans',$loans)->with('theme',$theme)
+      ->with('provinces',$provinces)->with('occupations',$occupations)
+      ->with('statuses',$statuses)->with('account_type_items',$account_type_items)
+      ->with('districts',$districts)->with('communes',$communes)
+      ->with('villages',$villages);
+    }
+
+    // update loan
+    public function update(Request $request, $id){
+      try {
+        DB::beginTransaction();
+        // check validation
+        // dd($request->begin_amount);
+        // exit;
+        $this->validate($request,[
+          'full_name'=>'required|max:50',
+          'latin_name'=>'nullable|max:50',
+          'nickname'=>'nullable|max:50',
+          'inlineradio'=>'required|integer|exists:cts_genders,id',
+          'occupation'=>'required|integer|exists:cts_occupations,id',
+          'birth_of_date'=>'required|date_format:Y-m-d',
+          'id_card_number'=>'required|max:50',
+          'status'=>'required|max:255',
+          'your_phone_number'=>'required|max:15',
+          'email'=>'nullable|email|max:50',
+          'provinces'=>'required|integer|exists:adr_provinces,id',
+          'districts'=>'required|integer|exists:adr_districts,id',
+          'communes'=>'required|integer|exists:adr_communes,id',
+          'villages'=>'required|integer|exists:adr_villages,id',
+          'avatar'=>'nullable|max:10240',
+          'id_card'=>'nullable|max:10240',
+          'loan_type'=>'required|integer|exists:acc_account_type_items,id',
+          'percent_rate'=>'required',
+          'begin_amount'=>'required',
+          'balance'=>'required',
+          'reason'=>'required|max:255',
+          'start_at'=>'required|date_format:Y-m-d',
+          'close_at'=>'nullable|date_format:Y-m-d'
+        ]);
+
+        // dd($request->all());
+        // exit;
+        $loans=Loans::findOrFail($id);
+        // dd($loans->people->name_en);
+        // update table people
+        $people=People::findOrFail($loans->people->id);
+        dd($people->id);
+        DB::commit();
+
+        Session::flash('success','កែប្រែបានជោគជ័យ!');
+        return redirect(route('admin.loan.index'));
+
+      } catch (Exception $e) {
+        DB::rollback();
+
+      }
+
+    }
 }

@@ -124,6 +124,85 @@ $().ready(function() {
         }
     });
 
+    // validat EditForm
+    // validate signup form on keyup and submit
+     $("#EditForm").validate({
+         rules: {
+             full_name: "required",
+             inlineradio: "required",
+             occupation:{
+                 valueNotEquals: "default"
+             },
+             birth_of_date:{
+                 required: true
+                 // anyDate: true
+             },
+             id_card_number:{
+                 required: true,
+                 digits: true
+             },
+             status:{
+                 valueNotEquals: "default"
+             },
+             your_phone_number:{
+                 required: true,
+                 digits: false
+             },
+             provinces:{
+                 valueNotEquals: "default"
+             },
+             loan_type:{
+                 valueNotEquals: "default"
+             },reason:{
+                 required: true
+             },
+             percent_rate:"required",
+             begin_amount:{
+                 required: true,
+
+             },
+
+         },
+         messages: {
+             full_name:"សូមបញ្ចូលឈ្មោះពេញរបស់អ្នកខ្ចី",
+             inlineradio:"សូមរើសភេទ",
+             occupation:{
+                 valueNotEquals: "សូមជ្រើសរើសមុខរបរ"
+             },
+             birth_of_date:{
+                 required: "សូមបញ្ចូលថ្ងៃកំណើត"
+                 //anyDate:"សូមបញ្ចូលជាប្រភេទថ្ងៃ ខែ ឆ្នាំ"
+             },
+             id_card_number:{
+                 required: "សូមបញ្ចូលលេខអត្តសញ្ណាណប័ណ្ណ",
+                 digits: "អនុញ្ញាតបានតែលេខទេ"
+             },
+             status:{
+
+                 valueNotEquals: "សូមជ្រើសរើសស្ថានភាព"
+             },
+             your_phone_number:{
+                 required: "សូមបញ្ចូលលេខទូរស័ព្ទ",
+                 digits: "សូមបញ្ចូលជាប្រភេទលេខ"
+             },
+             provinces:{
+                 valueNotEquals: "សូមរើសខេត្ត "
+             },
+             loan_type:{
+
+                 valueNotEquals: "សូមជ្រើសរើសប្រភេទកម្ចី"
+             },reason:{
+                 required: "សូមប្រាប់ពីមូលហេតុនៃការខ្ចី"
+             },
+             percent_rate:"សូមបំពេញការប្រាក់",
+             begin_amount:{
+                 required: "សូមបញ្ចូលប្រាក់កម្ចី",
+                 
+             }
+
+         }
+     });
+
     // date picker
     $("#birth_of_date, #start_at").flatpickr();
 

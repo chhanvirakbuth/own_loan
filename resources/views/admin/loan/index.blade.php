@@ -54,7 +54,7 @@
                             <form class="" action="#" method="post">
                               <a href="{{route('admin.loan.show',['id'=> $loan->id])}}" class="btn btn-light btn-sm waves-effect waves-light m-1 " data-toggle="tooltip" data-placement="top" title="លម្អិត" > <i class="zmdi zmdi-eye"></i></a>
                               <a href="{{route('admin.loan.payment',['id'=>$loan->id])}}" class="btn btn-light btn-sm waves-effect waves-light m-1 " data-toggle="tooltip" data-placement="top" title="បង់ការ"> <i class="zmdi zmdi-money"></i></a>
-                              <button type="button" class="btn btn-light btn-sm waves-effect waves-light m-1 " data-toggle="tooltip" data-placement="top" title="កែប្រែ"> <i class="zmdi zmdi-edit"></i></button>
+                              <a href="{{route('admin.loan.edit',['id'=>$loan->id])}}" class="btn btn-light btn-sm waves-effect waves-light m-1 " data-toggle="tooltip" data-placement="top" title="កែប្រែ"> <i class="zmdi zmdi-edit"></i></a>
                             </form>
                           </td>
                       </tr>

@@ -25,7 +25,7 @@
           {{-- end --}}
           <div class="card-title">អ្នកបង់ប្រាក់ <span class="customer-name">{{$loans->people->name_kh}}</span> 🤑 </div>
 				   <hr>
-				    <form method="post" action="{{route('admin.loan.update',$loans->id)}}">
+				    <form method="post" action="{{route('admin.loan.payment-update',$loans->id)}}">
               @csrf
               @method('PUT')
 

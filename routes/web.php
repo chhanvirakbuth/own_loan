@@ -49,10 +49,15 @@ Route::group([
       Route::post('/','LoanController@store')->name('admin.loan.store');
       // loan show loaner
       Route::get('show/{id}','LoanController@show')->name('admin.loan.show');
+      // view edit loans
+      Route::get('/{id}/edit','LoanController@edit')->name('admin.loan.edit');
+      // update loan account
+      Route::put('update/{id}','LoanController@update')->name('admin.loan.update');
+
       // loan loan payment
       Route::get('payment/{id}','LoanPaymentController@payment')->name('admin.loan.payment');
       // update loan payment
-      Route::put('payment/{id}','LoanPaymentController@update')->name('admin.loan.update');
+      Route::put('payment/{id}','LoanPaymentController@update')->name('admin.loan.payment-update');
       // index of loan payment
       Route::get('payment','LoanPaymentController@index')->name('admin.loan.payment-index');
       // search loan account number
