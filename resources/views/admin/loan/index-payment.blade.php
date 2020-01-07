@@ -11,7 +11,7 @@
 
 @section('content')
   <div class="card">
-			   <div class="card-header text-uppercase">Other Input Addons</div>
+			   <div class="card-header  sidebar-header">គណនីដែលត្រូវបង់ប្រាក់</div>
 			     <div class="card-body">
 				    <form action="{{route('admin.loan.payment-search')}}" method="post" id="search_form">
               @csrf

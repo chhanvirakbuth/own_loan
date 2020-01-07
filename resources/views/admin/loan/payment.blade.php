@@ -29,9 +29,6 @@
               @csrf
               @method('PUT')
 
-              <input type="hidden" name="user_id" @if (Auth::check()) value="{{ Auth::user()->id }}" @else 1 @endif>
-              <input type="hidden" name="user_name" @if (Auth::check()) value="{{ Auth::user()->name }}" @else guest @endif>
-
 					 <div class="form-group row">
 					  <label for="input-21" class="col-sm-2 col-form-label">លេខគណនី</label>
 					  <div class="col-sm-10">

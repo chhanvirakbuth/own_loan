@@ -21,7 +21,7 @@
 @section('content')
   <div class="card">
             <div class="card-body">
-              <h5 class="card-title">កម្ចីខែនេះ {{$khmer->getFullMonth() .'-'. $khmer->getFullYear()}} សរុប <?php echo $loans->count()?> នាក់</h5>
+              <h5 class="card-title">អ្នកមិនទាន់បង់ខែនេះ {{$khmer->getFullMonth() .'-'. $khmer->getFullYear()}}</h5>
               <div class="table-responsive">
                 <table class="table table-hover">
                   <thead>
@@ -42,26 +42,33 @@
                     @endphp
                     @if (count($loans)>0)
                       @foreach ($loans as $loan)
-                      <tr>
-                          <th scope="row"><?php echo $i;?></th>
-                          <td>{{$loan->people->name_kh}}</td>
-                          <td>{{$loan->people->gender->name_kh}}</td>
-                          <td>{{$loan->account->account_no}}</td>
-                          <td id="money">{{$loan->balance}} <span>&#6107;</span></td>
-                          <td id="money"><?php echo $loan->begin_amount * $loan->interest_rate?> <span>&#6107;</span></td>
-                          <td>@if ($loan->status == true)
-                            <i class="zmdi zmdi-close"></i>
-                          @else
-                            <i class="zmdi zmdi-check"></i>
-                          @endif</td>
-                          <td>
-                            <form class="" action="#" method="post">
-                              <a href="{{route('admin.loan.show',['id'=> $loan->id])}}" class="btn btn-light btn-sm waves-effect waves-light m-1 " data-toggle="tooltip" data-placement="top" title="លម្អិត" > <i class="zmdi zmdi-eye"></i></a>
-                              <a href="{{route('admin.loan.payment',['id'=>$loan->id])}}" class="btn btn-light btn-sm waves-effect waves-light m-1 " data-toggle="tooltip" data-placement="top" title="បង់ការ"> <i class="zmdi zmdi-money"></i></a>
-                              <a href="{{route('admin.loan.edit',['id'=>$loan->id])}}" class="btn btn-light btn-sm waves-effect waves-light m-1 " data-toggle="tooltip" data-placement="top" title="កែប្រែ"> <i class="zmdi zmdi-edit"></i></a>
-                            </form>
-                          </td>
-                      </tr>
+                        @if ($loan->status == true)
+                          <tr>
+                              <th scope="row"><?php echo $i;?></th>
+                              <td>{{$loan->people->name_kh}}</td>
+                              <td>{{$loan->people->gender->name_kh}}</td>
+                              <td>{{$loan->account->account_no}}</td>
+                              <td id="money">{{$loan->balance}} <span>&#6107;</span></td>
+                              <td id="money"><?php echo $loan->begin_amount * $loan->interest_rate?> <span>&#6107;</span></td>
+                              <td>@if ($loan->status == true)
+                                <i class="zmdi zmdi-close"></i>
+                              @else
+                                <i class="zmdi zmdi-check"></i>
+                              @endif</td>
+                              <td>
+                                <form class="" action="#" method="post">
+                                  <a href="{{route('admin.loan.show',['id'=> $loan->id])}}" class="btn btn-light btn-sm waves-effect waves-light m-1 " data-toggle="tooltip" data-placement="top" title="លម្អិត" > <i class="zmdi zmdi-eye"></i></a>
+                                  <a href="{{route('admin.loan.payment',['id'=>$loan->id])}}" class="btn btn-light btn-sm waves-effect waves-light m-1 " data-toggle="tooltip" data-placement="top" title="បង់ការ"> <i class="zmdi zmdi-money"></i></a>
+                                  <a href="{{route('admin.loan.edit',['id'=>$loan->id])}}" class="btn btn-light btn-sm waves-effect waves-light m-1 " data-toggle="tooltip" data-placement="top" title="កែប្រែ"> <i class="zmdi zmdi-edit"></i></a>
+                                </form>
+                              </td>
+                          </tr>
+                        @else
+                          <tr>
+                            <td colspan="8" class="text-center">គ្មានទិន្ន័យត្រូវបង្ហាញទេ!</td>
+                          </tr>
+                        @endif
+
                       @php
                         $i++;
                       @endphp

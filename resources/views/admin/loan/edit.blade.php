@@ -241,7 +241,7 @@
                 <label for="input-19" class="col-sm-2 col-form-label">ការប្រាក់</label>
                 <div class="col-sm-4">
                   <input type="text" name="percent_rate" id="percent_rate"  class="form-control" placeholder="គិតជា %" autocomplete="off"
-                  value="{{$loans->interest_rate}}">
+                  value="{{$loans->interest_rate}}" readonly>
 
                 </div>
             </div>

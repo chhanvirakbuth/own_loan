@@ -5,6 +5,10 @@ namespace App\Admin\Account;
 use Illuminate\Database\Eloquent\Model;
 use App\Admin\Account\PaymentTransactions;
 
+use App\Admin\Customer\People;
+use App\Admin\Account\Accounts;
+use App\Admin\Account\AccountTypeItems;
+
 class Deposits extends Model
 {
     //table mapping
@@ -34,6 +38,21 @@ class Deposits extends Model
     // has many payment transactions
     public function payment_transactions(){
       return $this->hasMany(PaymentTransactions::class);
+    }
+
+    // belong to people
+    public function people(){
+      return $this->belongsTo(People::class);
+    }
+
+    // belong to account
+    public function account(){
+      return $this->belongsTo(Accounts::class);
+    }
+
+    // belong to account type items
+    public function account_type_items(){
+      return $this->belongsTo(AccountTypeItems::class);
     }
     // ####################end relationship :( ##############################
 }

@@ -5,15 +5,17 @@ namespace App\Admin\Account;
 use Illuminate\Database\Eloquent\Model;
 use App\Admin\Customer\People;
 use App\Admin\Customer\AccountTypes;
+
 use App\Admin\Account\Loans;
 use App\Admin\Account\PaymentTransactions;
+use App\Admin\Account\Deposits;
 
 class Accounts extends Model
 {
     protected $table='acc_accounts';
     protected $hidden=['created_at','updated_at','deleted_at'];
 
-    protected $fillable=['people_id','account_type_id','account_type_item_id','account_no','actived','created_by'];
+    protected $fillable=['people_id','account_type_id','account_type_item_id','account_no','actived','created_by','updated_by'];
 
     //###############let make relationship with someone######################
     // belongsTo people
@@ -34,6 +36,11 @@ class Accounts extends Model
     // has many payment transactions
     public function payment_transactions(){
       return $this->hasMany(PaymentTransactions::class);
+    }
+
+    // has many deposit
+    public function deposits(){
+      return $this->hasMany(Deposits::class);
     }
     // #################end relationship :( ################################
 

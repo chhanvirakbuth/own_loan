@@ -75,7 +75,7 @@
          <li class="sidebar-header">មីនុយ</li>
          <li>
            <a href="javaScript:void();" class="waves-effect">
-             <i class="zmdi zmdi-view-dashboard"></i> <span>Dashboard</span><i class="fa fa-angle-left pull-right"></i>
+             <i class="zmdi zmdi-view-dashboard"></i> <span>ផ្ទាំងព័ត៌មាន</span><i class="fa fa-angle-left pull-right"></i>
            </a>
    		<ul class="sidebar-submenu">
    		  <li><a href="index.html"><i class="zmdi zmdi-dot-circle-alt"></i> eCommerce</a></li>
@@ -95,26 +95,23 @@
            <li><a href="{{route('admin.loan.index')}}"><i class="zmdi zmdi-dot-circle-alt"></i> បញ្ចីអ្នកខ្ចី</a></li>
            <li><a href="{{route('admin.loan.create')}}"><i class="zmdi zmdi-dot-circle-alt"></i> ខ្ចីលុយ</a></li>
            <li><a href="{{route('admin.loan.payment-index')}}"><i class="zmdi zmdi-dot-circle-alt"></i> បង់ការ</a></li>
-           <li><a href="ui-list-groups.html"><i class="zmdi zmdi-dot-circle-alt"></i> List Groups</a></li>
+           <li><a href="{{route('admin.loan.unpaid')}}"><i class="zmdi zmdi-dot-circle-alt"></i> មិនទាន់បង់</a></li>
 
            </ul>
          </li>
          <li>
            <a href="javaScript:void();" class="waves-effect">
              <i class="zmdi zmdi-card-travel"></i>
-             <span>Components</span>
+             <span>សន្សំ</span>
              <i class="fa fa-angle-left pull-right"></i>
            </a>
            <ul class="sidebar-submenu">
-             <li><a href="components-range-slider.html"><i class="zmdi zmdi-dot-circle-alt"></i> Range Sliders</a></li>
-             <li><a href="components-image-carousel.html"><i class="zmdi zmdi-dot-circle-alt"></i> Image Carousels</a></li>
-             <li><a href="components-grid-layouts.html"><i class="zmdi zmdi-dot-circle-alt"></i> Grid Layouts</a></li>
-             <li><a href="components-switcher-buttons.html"><i class="zmdi zmdi-dot-circle-alt"></i> Switcher Buttons</a></li>
-             <li><a href="components-pricing-table.html"><i class="zmdi zmdi-dot-circle-alt"></i> Pricing Tables</a></li>
-             <li><a href="components-vertical-timeline.html"><i class="zmdi zmdi-dot-circle-alt"></i> Vertical Timeline</a></li>
-             <li><a href="components-horizontal-timeline.html"><i class="zmdi zmdi-dot-circle-alt"></i> Horizontal Timeline</a></li>
-             <li><a href="components-fancy-lightbox.html"><i class="zmdi zmdi-dot-circle-alt"></i> Fancy Lightbox</a></li>
-             <li><a href="components-color-palette.html"><i class="zmdi zmdi-dot-circle-alt"></i> Color Palette</a></li>
+             <li><a href="{{route('deposit.index')}}"><i class="zmdi zmdi-dot-circle-alt"></i> បញ្ចីអ្នកសន្សំ</a></li>
+             <li><a href="{{route('deposit.create')}}"><i class="zmdi zmdi-dot-circle-alt"></i> សមាជិកថ្មី</a></li>
+             <li><a href="components-grid-layouts.html"><i class="zmdi zmdi-dot-circle-alt"></i> ដាក់ប្រាក់</a></li>
+             <li><a href="components-switcher-buttons.html"><i class="zmdi zmdi-dot-circle-alt"></i> ដកប្រាក់</a></li>
+             <li><a href="components-pricing-table.html"><i class="zmdi zmdi-dot-circle-alt"></i> មិនទាន់សន្សំ</a></li>
+
            </ul>
          </li>
 
@@ -378,6 +375,10 @@
 
     @if (Session::has('info'))
       Command: toastr["info"]("{{Session::get('info')}}", "សូមអភ័យទោស!")
+    @endif
+
+    @if (Session::has('warning'))
+      Command: toastr["warning"]("{{Session::get('warning')}}", "គណនីនេះ!")
     @endif
   </script>
   @yield('custom-script')

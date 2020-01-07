@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Admin\Account;
+use Phanna\Converter\KhmerDatetime;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -10,6 +11,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use App\Enums\AccountEnum;
 use App\Enums\GenderEnum;
 use App\Enums\StatusEnum;
+use App\Enums\LoanStatusEnum;
 
 use App\Admin\Address\Provinces;
 use App\Admin\Address\Districts;
@@ -29,27 +31,42 @@ use App\Admin\Account\PaymentTypes;
 
 use App\Admin\App\Theme;
 
+
 use Session;
+use Carbon\Carbon;
+use Auth;
 class LoanController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth');
+
     }
     //
     public function index(){
       $theme=Theme::findOrFail(1);
+      $date=date('y-m-d');
+      $khmer = new KhmerDatetime($date);
       $loans=Loans::with(['people','account','account_type_item'])->paginate(15);
-      return view('admin.loan.index')->with('loans',$loans)->with('theme',$theme);
+      return view('admin.loan.index')->with('loans',$loans)->with('theme',$theme)
+      ->with('khmer',$khmer);
     }
-
+    // show unpaid customer
+    public function unpaid(){
+      $theme=Theme::findOrFail(1);
+      $date=date('y-m-d');
+      $khmer = new KhmerDatetime($date);
+      $loans=Loans::paginate(15);
+      return view('admin.loan.unpaid')->with('loans',$loans)->with('theme',$theme)
+      ->with('khmer',$khmer);
+    }
     // show create loan form
     public function create(){
       $provinces=Provinces::where('actived',1)->get();
       $occupations=Occupations::where('actived',1)->get();
       $statuses=Statuses::all();
       $theme=Theme::findOrFail(1);
-      $account_type_items=AccountTypeItems::where('account_type_id',1)->get();
+      $account_type_items=AccountTypeItems::where('account_type_id',AccountEnum::LOAN)->get();
       return view('admin.loan.create')->with('provinces',$provinces)
         ->with('occupations',$occupations)->with('statuses',$statuses)
         ->with('account_type_items',$account_type_items)
@@ -97,6 +114,7 @@ class LoanController extends Controller
         $beginAmount=$request->begin_amount;
 
         // let insert to Database
+          $user = Auth::user();
           // to table people
         $people=new People();
         $people->gender_id=$request->inlineradio;
@@ -114,7 +132,7 @@ class LoanController extends Controller
         $people->email=$request->email;
         $people->status_id=$request->status;
         $people->actived=StatusEnum::ACTIVE;
-        $people->created_by=$request->user_id;
+        $people->created_by=$user->id;
           // check if has file then upload'to images table
         if($request->hasFile('avatar')){ //store to table people at avatar field
           $people->avatar = $request->file('avatar')->store('avatars');
@@ -138,9 +156,17 @@ class LoanController extends Controller
         $account->people_id=$last_people_id;
         $account->account_type_id=$account_type_id;
         $account->account_type_item_id=$accountTypeItemId;
-        $account->account_no=mt_rand(00000000, 99999999);
+        $code=mt_rand(00000000, 99999999);
+        if (Accounts::where('account_no', '=', $code)->count() > 0) {
+          // found...
+          $new_code=mt_rand(00000000, 99999999);
+          $account->account_no=$new_code;
+        } else {
+          // note found...
+          $account->account_no=$code;
+        }
         $account->actived=StatusEnum::ACTIVE;
-        $account->created_by=$request->user_id;
+        $account->created_by=$user->id;
         $account->save();
         $last_account_id=$account->id;
         //
@@ -148,14 +174,14 @@ class LoanController extends Controller
         $loans=new Loans();
         $loans->people_id=$last_people_id;
         $loans->account_id=$last_account_id;
-        $loans->status_id=StatusEnum::ACTIVE;
+        $loans->status=StatusEnum::ACTIVE;
         $loans->account_type_item_id=$accountTypeItemId;
         $loans->started_at=$startAt;
         $loans->closed_at=$request->close_at;
         $loans->begin_amount=$beginAmount;
         $loans->balance=$beginAmount;
         $loans->interest_rate=$request->percent_rate;
-        $loans->created_by=$request->user_id;
+        $loans->created_by=$user->id;
         $loans->save();
 
         DB::commit();
@@ -237,13 +263,59 @@ class LoanController extends Controller
           'close_at'=>'nullable|date_format:Y-m-d'
         ]);
 
-        // dd($request->all());
-        // exit;
+        $user = Auth::user();
+
         $loans=Loans::findOrFail($id);
-        // dd($loans->people->name_en);
         // update table people
         $people=People::findOrFail($loans->people->id);
-        dd($people->id);
+        $people->gender_id=$request->inlineradio;
+        $people->occupation_id=$request->occupation;
+        $people->province_id=$request->provinces;
+        $people->district_id=$request->districts;
+        $people->commune_id=$request->communes;
+        $people->village_id=$request->villages;
+        $people->name_kh=$request->full_name;
+        $people->name_en=$request->latin_name;
+        $people->nick_name=$request->nickname;
+        $people->date_of_birth=$request->birth_of_date;
+        $people->phone_no=$request->your_phone_number;
+        $people->id_card_number=$request->id_card_number;
+        $people->email=$request->email;
+        $people->status_id=$request->status;
+        $people->updated_by=$user->id;
+          // check if has file then upload'to images table
+        if($request->hasFile('avatar')){ //store to table people at avatar field
+          $people->avatar = $request->file('avatar')->store('avatars');
+
+        }
+        // if has id card
+        if ($request->hasFile('id_card')) {
+          $people->idcard=$request->file('id_card')->store('idcards');
+        }
+        $people->save();
+
+        // update table reason
+        $reason=Reason::findOrFail($loans->people->reason->id);
+        $reason->people_id=$loans->people->id;
+        $reason->title=$request->reason;
+        $reason->save();
+
+        // update to table account
+        $account =Accounts::findOrFail($loans->account_id);
+        $account->people_id=$loans->people->id;
+        $account->account_type_item_id=$request->loan_type;
+        $account->updated_by=$user->id;
+        $account->save();
+
+        // update to table loan
+        $loans->account_type_item_id=$request->loan_type;
+        $loans->started_at=$request->start_at;
+        $loans->closed_at=$request->close_at;
+        $loans->begin_amount=$request->begin_amount;
+        $loans->balance=$request->balance;
+        $loans->interest_rate=$request->percent_rate;
+        $loans->updated_by=$user->id;
+        $loans->save();
         DB::commit();
 
         Session::flash('success','កែប្រែបានជោគជ័យ!');

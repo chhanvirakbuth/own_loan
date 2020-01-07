@@ -14,9 +14,10 @@
         <div class="card-body">
           <div class="card-title">គណនីកម្ចីរបស់ <span class="customer-name"></span>{{$account->people->name_kh}}  👥 </div>
 				   <hr>
-				    <form method="post" action="#">
+				    <form method="post" action="{{route('admin.loan.payment-update.search',$loans->id)}}">
               @csrf
               @method('PUT')
+              
 					 <div class="form-group row">
 					  <label for="input-21" class="col-sm-2 col-form-label">លេខគណនី</label>
 					  <div class="col-sm-10">
@@ -64,7 +65,6 @@
  						<label for="input-26" class="col-sm-2 col-form-label">បង់រំលោះចំនួន</label>
  						<div class="col-sm-10">
  						<input type="text" class="form-control redeem_amount" id="money" name="redeem_amount"​>
-            <input type="hidden" name="" id="reedeem" value="" autocomplete="off">
  						</div>
  					 </div>
           <div class="form-group row">

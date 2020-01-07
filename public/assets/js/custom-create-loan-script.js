@@ -197,7 +197,7 @@ $().ready(function() {
              percent_rate:"សូមបំពេញការប្រាក់",
              begin_amount:{
                  required: "សូមបញ្ចូលប្រាក់កម្ចី",
-                 
+
              }
 
          }
@@ -276,10 +276,12 @@ $().ready(function() {
             if(data){
               $('#percent_rate').empty();
               $.each(data,function(key,value){
-              $('#percent_rate').val(value);
+              $('#percent_rate').val((value * 100) + ' %');
+
               });
             }
           }
         });
     });
+
 });

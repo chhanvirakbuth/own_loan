@@ -35,7 +35,7 @@ Route::group([
 
     // For Home Page change Theme
     Route::post('/theme/{name}','App\ThemeController@setTheme')->name('admin.theme');
-    // For Loan Controll
+    // Route group for loan
     Route::group([
       'prefix'=>'loan',
       'namespace'=>'Account'
@@ -43,6 +43,8 @@ Route::group([
     ],function(){
       // loan index show all loaner
       Route::get('/','LoanController@index')->name('admin.loan.index');
+      // show unpaid customer
+      Route::get('/unpaid','LoanController@unpaid')->name('admin.loan.unpaid');
       // loan create or register
       Route::get('register','LoanController@create')->name('admin.loan.create');
       // loan store to database
@@ -62,10 +64,21 @@ Route::group([
       Route::get('payment','LoanPaymentController@index')->name('admin.loan.payment-index');
       // search loan account number
       Route::post('/search','LoanPaymentController@search')->name('admin.loan.payment-search');
+      // update loan by search
+      Route::put('/payment/update/{id}','LoanPaymentController@search_update')->name('admin.loan.payment-update.search');
       // for get Rate
       Route::get('rate/{id}','LoanController@getLoanRate')->name('admin.loan.rate');
-    });
 
+    });
+      // route group for deposit
+      Route::group([
+        'prefix'=>'deposit',
+        'namespace'=>'Account'
+      ],function(){
+        Route::get('/','DepositController@index')->name('deposit.index');
+        Route::get('/register','DepositController@create')->name('deposit.create');
+        Route::post('/','DepositController@store')->name('deposit.post');
+      });
 });
 
 // get Address route

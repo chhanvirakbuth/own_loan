@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Admin\Account\Accounts;
 use App\Admin\Account\AccountTypes;
 use App\Admin\Account\Loans;
+use App\Admin\Account\Deposits;
 
 class AccountTypeItems extends Model
 {
@@ -26,7 +27,7 @@ class AccountTypeItems extends Model
       return ($value);
     }
 
-    // relationship
+    // #####################start making some relationship####################
       // one to many with account
     public function accounts(){
       return $this->hasMany(Accounts::class);
@@ -41,4 +42,10 @@ class AccountTypeItems extends Model
     public function loans(){
       return $this->hasMany(Loans::class);
     }
+
+    // has many deposits
+    public function deposits(){
+      return $this->hasMany(Deposits::class);
+    }
+    // ####################end the relationship :(############################
 }

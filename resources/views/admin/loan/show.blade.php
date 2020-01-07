@@ -13,12 +13,10 @@
         <div class="card-body">
           <form id="signupForm" action="#" method="POST" enctype="multipart/form-data">
             @csrf
-
-            {{-- get user id --}}
-            @if (Auth::check())
-              <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
-            @endif
-            {{-- <input type="hidden" name="user_id" value="{{Auth::user()->id}}"> --}}
+            <h4 class="form-header">
+              <i class="zmdi zmdi-account-o"></i>
+               គណនីលេខ {{$loans->account->account_no}}
+            </h4>
             <h4 class="form-header">
               <i class="fa fa-address-book-o"></i>
                ព័ត៍មានទូទៅ
@@ -186,7 +184,7 @@
                 <label for="input-19" class="col-sm-2 col-form-label">ការប្រាក់</label>
                 <div class="col-sm-4">
                   <input type="text" name="percent_rate" id="percent_rate"  class="form-control" placeholder="គិតជា %" autocomplete="off"
-                  value="{{$loans->interest_rate}}" disabled>
+                  value="{{$loans->interest_rate * 100}} %" disabled>
 
                 </div>
             </div>

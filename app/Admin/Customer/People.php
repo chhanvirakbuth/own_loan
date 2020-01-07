@@ -3,13 +3,17 @@
 namespace App\Admin\Customer;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Admin\Customer\Reason;
+
 use App\Admin\Account\Accounts;
 use App\Admin\Account\Loans;
+use App\Admin\Account\Deposits;
 use App\Admin\Account\PaymentTransactions;
+
+use App\Admin\Customer\Reason;
 use App\Admin\Customer\Gender;
 use App\Admin\Customer\Occupations;
 use App\Admin\Customer\Statuses;
+
 use App\Admin\Address\Provinces;
 use App\Admin\Address\Districts;
 use App\Admin\Address\Communes;
@@ -41,7 +45,8 @@ class People extends Model
       'status_id',
       '	meta',
       'actived',
-      'created_by'
+      'created_by',
+      'updated_by'
     ];
 
 
@@ -100,7 +105,13 @@ class People extends Model
     public function payment_transactions(){
       return $this->hasMany(PaymentTransactions::class);
     }
-    //#########################################################
+
+    // has many deposit
+    public function deposits(){
+      return $this->hasMany(Deposits::class);
+    }
+
+    //########################end of relationship###############################
     // accessor
     // get nick name
     public function getNickNameAttribute($value){

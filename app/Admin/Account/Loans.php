@@ -8,6 +8,7 @@ use App\Admin\Account\Accounts;
 use App\Admin\Account\AccountTypeItems;
 use App\Admin\Account\PaymentTransactions;
 
+use Carbon\Carbon;
 class Loans extends Model
 {
     // table mapping
@@ -28,7 +29,8 @@ class Loans extends Model
       'n_of_paid_interest',
       'last_paid_interest_at',
       'actived',
-      'created_by'
+      'created_by',
+      'updated_by'
     ];
 
     // #########################relationship#################################
@@ -54,11 +56,19 @@ class Loans extends Model
       // #####################end relationship###############################
       // accessor
       public function getStatusAttribute($value){
-        if ($value == true) {
-          return ('<i class="zmdi zmdi-close"></i>');
-        } else {
-          return ('<i class="zmdi zmdi-check"></i>');
+        $now=Carbon::now();
+        $last_paid=$this->last_paid_interest_at;
+        if ( !empty ( $last_paid ) ) {
+          $year=Carbon::parse($last_paid)->year;
+          $month=Carbon::parse($last_paid)->month;
+          if ($now->subMonth()->month ==$month) {
+            return $value=true;
+          }else {
+            return $value=false;
+          }
         }
+
+        return $value;
 
       }
 }
