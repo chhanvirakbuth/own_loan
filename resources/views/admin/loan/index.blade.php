@@ -1,5 +1,7 @@
 @extends('layouts.admin-menu')
-
+@section('title')
+  អ្នកខ្ចីប្រាក់
+@endsection
 @section('custom-css')
   <link rel="stylesheet" href="{{asset('assets/css/custom-css.css')}}">
 
@@ -31,7 +33,7 @@
                       <th scope="col">ភេទ</th>
                       <th scope="col">លេខគណនី</th>
                       <th scope="col">ប្រាក់ជំពាក់</th>
-                      <th scope="col">ការប្រាក់</th>
+                      <th scope="col">ការប្រាក់ត្រូវបង់</th>
                       <th scope="col">ស្ថានភាព</th>
                       <th scope="col">ផ្សេងៗ</th>
                     </tr>

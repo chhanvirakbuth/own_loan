@@ -18,7 +18,7 @@ $().ready(function() {
        });
 
       // input number only
-       $("#your_phone_number, #id_card_number,#your_friend_number,#begin_amount").on("keypress keyup blur",function (event) {
+       $("#your_friend_number").on("keypress keyup blur",function (event) {
           $(this).val($(this).val().replace(/[^\d].+/, ""));
            if ((event.which < 48 || event.which > 57)) {
                event.preventDefault();
@@ -60,7 +60,7 @@ $().ready(function() {
             },
             id_card_number:{
                 required: true,
-                digits: true
+                digits: false
             },
             status:{
                 valueNotEquals: "default"
@@ -80,7 +80,7 @@ $().ready(function() {
             percent_rate:"required",
             begin_amount:{
                 required: true,
-                digits: true
+                digits: false
             },
 
         },
@@ -203,6 +203,7 @@ $().ready(function() {
          }
      });
 
+     
     // date picker
     $("#birth_of_date, #start_at").flatpickr();
 

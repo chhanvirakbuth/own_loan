@@ -10,7 +10,7 @@
   <meta name="author" content=""/>
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
-  <title>Dashtreme - Multipurpose Bootstrap4 Admin Template</title>
+  <title>{{$theme->brand}} -@yield('title')</title>
   <!--favicon-->
   <link rel="icon" href="{{asset('assets/images/favicon.ico')}}" type="image/x-icon">
   <!-- simplebar CSS-->
@@ -28,7 +28,7 @@
   <!-- Custom Style-->
   <link href="{{asset('assets/css/app-style.css')}}" rel="stylesheet"/>
   {{-- Font khmer --}}
-  <link href="https://fonts.googleapis.com/css?family=Dangrek|Kantumruy|Nokora&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Dangrek|Koulen|Kantumruy|Nokora&display=swap" rel="stylesheet">
 
   @yield('custom-css')
 
@@ -46,9 +46,11 @@
     <!--Start sidebar-wrapper-->
       <div id="sidebar-wrapper" data-simplebar="" data-simplebar-auto-hide="true">
         <div class="brand-logo">
-         <a href="index.html">
-          <img src="{{asset('assets/images/logo-icon.png')}}" class="logo-icon" alt="logo icon">
-          <h5 class="logo-text">Dashtreme Admin</h5>
+         <a href="{{route('admin.home')}}">
+
+          <img src="{{asset($theme->logo)}}" class="logo-icon" alt="logo icon">
+
+          <a href="{{route('admin.home')}}"  class="logo-text">{{$theme->brand}}</a>
         </a>
       </div>
       <div class="user-details">
@@ -61,7 +63,7 @@
         <div id="user-dropdown" class="collapse">
          <ul class="user-setting-menu">
                <li><a href="javaScript:void();"><i class="icon-user"></i>  My Profile</a></li>
-               <li><a href="javaScript:void();"><i class="icon-settings"></i> Setting</a></li>
+               <li><a href="{{route('admin.setting')}}"><i class="icon-settings"></i> Setting</a></li>
                <li><a href="{{ route('logout') }}"onclick="event.preventDefault();
                 document.getElementById('logout-form').submit();"><i class="icon-power"></i> Logout</a>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

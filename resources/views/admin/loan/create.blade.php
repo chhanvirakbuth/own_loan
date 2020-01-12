@@ -1,13 +1,20 @@
 @extends('layouts.admin-menu')
-
+@section('title')
+  ចុះឈ្មោះខ្ចីលុយ
+@endsection
 @section('custom-css')
   {{-- jasny bootstrap --}}
   <link href="{{asset('assets/css/jasny-bootstrap.min.css')}}" rel="stylesheet">
   <link rel="stylesheet" href="{{asset('assets/css/custom-css.css')}}">
 
   {{-- date picker (flatpickr) --}}
-  <link rel="stylesheet" href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
+  <link rel="stylesheet" href="{{asset('assets/css/flatpickr.dark.css')}}">
 
+  {{-- cleave js --}}
+  <script src="{{asset('assets/js/cleave.min.js')}}" charset="utf-8"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cleave.js/1.5.3/addons/cleave-phone.kh.js"></script>
+  <!-- ...AutoNumeric :-->
+<script src="https://cdn.jsdelivr.net/npm/autonumeric@4.1.0"></script>
 @endsection
 
 @section('content')
@@ -79,7 +86,7 @@
             <div class="form-group row">
                 <label for="input-7" class="col-sm-2 col-form-label">អត្តសញ្ញាណប័ណ្ណលេខ</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control" id="id_card_number" name="id_card_number" placeholder="អាចប្រើការបាន"
+                    <input type="text" class="form-control id_card_number" id="id_card_number" name="id_card_number" placeholder="អាចប្រើការបាន"
                     autocomplete="off">
                 </div>
                 <label for="input-8" class="col-sm-2 col-form-label">ស្ថានភាព</label>
@@ -100,11 +107,11 @@
             <div class="form-group row">
               <label for="input-9" class="col-sm-2 col-form-label">លេខទូរស័ព្ទផ្ទាល់ខ្លួន</label>
               <div class="col-sm-4">
-                <input type="text" class="form-control" id="your_phone_number" name="your_phone_number">
+                <input type="text" class="form-control input-phone" id="your_phone_number" name="your_phone_number">
               </div>
-              <label for="input-10" class="col-sm-2 col-form-label">អ៊ីម៉ែល</label>
+              <label for="input-10" class="col-sm-2 col-form-label">អ៊ីមែល</label>
               <div class="col-sm-4">
-                <input type="email" class="form-control" id="email" name="email">
+                <input type="email" class="form-control" id="email" name="email" autocomplete="off" placeholder="អត់ក៏បាន">
               </div>
             </div>
 
@@ -150,12 +157,12 @@
                 <label for="input-16" class="col-sm-2 col-form-label">រូបបុគ្គលអ្នកខ្ចី</label>
                 <div class="col-sm-4">
                 <div class="fileinput fileinput-new" data-provides="fileinput">
-                    <div class="fileinput-new thumbnail" style="width: 150px; height: 150px;">
+                    <div class="fileinput-new thumbnail" style="width: 100%; height: 100%;">
                         <img src="http://placehold.it/150x150" alt="Photo">
                     </div>
-                    <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"></div>
+                    <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 280px; max-height: 150px;"></div>
                     <div class="text-center">
-                        <span class="btn btn-light waves-effect waves-light btn-file"><span class="fileinput-new">រើសរូបភាព</span><span class="fileinput-exists">ប្ដូររូបភាព</span><input type="file" name="avatar"></span>
+                        <span class="btn btn-light waves-effect waves-light btn-file"><span class="fileinput-new"><a>រើសរូបភាព</a></span><span class="fileinput-exists"><a>ប្ដូររូបភាព</a></span><input type="file" name="avatar"></span>
                         <a href="#" class="btn btn-light waves-effect waves-light fileinput-exists" data-dismiss="fileinput">លុបចេញ</a>
                     </div>
                 </div>
@@ -164,12 +171,12 @@
                 <label for="input-17" class="col-sm-2 col-form-label">រូបអត្តសញ្ញាណប័ណ្ណ</label>
                 <div class="col-sm-4">
                     <div class="fileinput fileinput-new" data-provides="fileinput">
-                        <div class="fileinput-new thumbnail" style="width: 150px; height: 150px;">
+                        <div class="fileinput-new thumbnail" style="width: 100%; height: 100%;">
                             <img src="http://placehold.it/150x150" alt="Photo">
                         </div>
-                        <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"></div>
+                        <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 280px; max-height: 150px;"></div>
                         <div class="text-center">
-                            <span class="btn btn-light waves-effect waves-light btn-file"><span class="fileinput-new">រើសរូបភាព</span><span class="fileinput-exists">ប្ដូររូបភាព</span><input type="file" name="id_card"></span>
+                            <span class="btn btn-light waves-effect waves-light btn-file"><span class="fileinput-new"><a>រើសរូបភាព</a></span><span class="fileinput-exists"><a>ប្ដូររូបភាព</a></span><input type="file" name="id_card"></span>
                             <a href="#" class="btn btn-light waves-effect waves-light fileinput-exists" data-dismiss="fileinput">លុបចេញ</a>
                         </div>
                     </div>
@@ -201,7 +208,7 @@
             <div class="form-group row">
                 <label for="input-20" class="col-sm-2 col-form-label">ចំនួនប្រាក់កម្ចី</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control" placeholder="1,000,000" name="begin_amount" id="begin_amount">
+                    <input type="text" autocomplete="off" class="form-control myInput"  placeholder="1,000,000" name="begin_amount" id="begin_amount">
                 </div>
                 <label for="input-21" class="col-sm-2 col-form-label">មូលហេតុការខ្ចី</label>
                 <div class="col-sm-4">
@@ -242,5 +249,28 @@
     <script src="{{asset('assets/js/custom-create-loan-script.js')}}" charset="utf-8"></script>
 
     {{-- date picker --}}
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+      <script src="{{asset('assets/js/flatpickr.js')}}" charset="utf-8"></script>
+
+    {{-- cleave --}}
+    <script>
+      var cleave = new Cleave('.input-phone', {
+        phone: true,
+        phoneRegionCode: 'KH'
+      });
+
+
+      var cleave = new Cleave('.id_card_number', {
+          blocks: [3, 3, 3],
+          uppercase: true
+      });
+    </script>
+    <script>
+      new AutoNumeric('.myInput', {
+        decimalPlaces: 0,
+        currencySymbol: "៛",
+        currencySymbolPlacement: "s",
+        unformatOnSubmit: true
+
+       });
+    </script>
 @endsection

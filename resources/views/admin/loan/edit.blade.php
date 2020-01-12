@@ -194,12 +194,12 @@
                 <label for="input-16" class="col-sm-2 col-form-label">រូបបុគ្គលអ្នកខ្ចី</label>
                 <div class="col-sm-4">
                 <div class="fileinput fileinput-new" data-provides="fileinput">
-                    <div class="fileinput-new thumbnail" style="width: 250px; height: 200px;">
+                    <div class="fileinput-new thumbnail" style="width: 100%; height: 150px;">
                         <img src="{{asset($loans->people->avatar)}}" alt="Photo">
                     </div>
-                    <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"></div>
+                    <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 100%; max-height: 100%;"></div>
                     <div class="text-center">
-                        <span class="btn btn-light waves-effect waves-light btn-file"><span class="fileinput-new">រើសរូបភាព</span><span class="fileinput-exists">ប្ដូររូបភាព</span><input type="file" name="avatar"></span>
+                        <span class="btn btn-light waves-effect waves-light btn-file"><span class="fileinput-new"><a>រើសរូបភាព</a></span><span class="fileinput-exists"><a>ប្ដូររូបភាព</a></span><input type="file" name="avatar"></span>
                         <a href="#" class="btn btn-light waves-effect waves-light fileinput-exists" data-dismiss="fileinput">លុបចេញ</a>
                     </div>
                 </div>
@@ -208,12 +208,12 @@
                 <label for="input-17" class="col-sm-2 col-form-label">រូបអត្តសញ្ញាណប័ណ្ណ</label>
                 <div class="col-sm-4">
                     <div class="fileinput fileinput-new" data-provides="fileinput">
-                        <div class="fileinput-new thumbnail" style="width: 250px; height: 200px;">
+                        <div class="fileinput-new thumbnail" style="width: 100%; height: 150px;">
                             <img src="{{asset($loans->people->idcard)}}" alt="Photo">
                         </div>
-                        <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"></div>
+                        <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 100%; max-height: 100%;"></div>
                         <div class="text-center">
-                            <span class="btn btn-light waves-effect waves-light btn-file"><span class="fileinput-new">រើសរូបភាព</span><span class="fileinput-exists">ប្ដូររូបភាព</span><input type="file" name="id_card"></span>
+                            <span class="btn btn-light waves-effect waves-light btn-file"><span class="fileinput-new"><a>រើសរូបភាព</a></span><span class="fileinput-exists"><a>ប្ដូររូបភាព</a></span><input type="file" name="id_card"></span>
                             <a href="#" class="btn btn-light waves-effect waves-light fileinput-exists" data-dismiss="fileinput">លុបចេញ</a>
                         </div>
                     </div>
@@ -241,7 +241,7 @@
                 <label for="input-19" class="col-sm-2 col-form-label">ការប្រាក់</label>
                 <div class="col-sm-4">
                   <input type="text" name="percent_rate" id="percent_rate"  class="form-control" placeholder="គិតជា %" autocomplete="off"
-                  value="{{$loans->interest_rate}}" readonly>
+                  value="{{$loans->interest_rate * 100}} %" readonly>
 
                 </div>
             </div>

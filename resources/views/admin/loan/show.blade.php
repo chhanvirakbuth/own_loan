@@ -4,8 +4,9 @@
   {{-- jasny bootstrap --}}
   <link href="{{asset('assets/css/jasny-bootstrap.min.css')}}" rel="stylesheet">
   <link rel="stylesheet" href="{{asset('assets/css/custom-css.css')}}">
-
-
+  {{-- cleave js --}}
+  <script src="{{asset('assets/js/cleave.min.js')}}" charset="utf-8"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cleave.js/1.5.3/addons/cleave-phone.kh.js"></script>
 @endsection
 
 @section('content')
@@ -15,7 +16,8 @@
             @csrf
             <h4 class="form-header">
               <i class="zmdi zmdi-account-o"></i>
-               គណនីលេខ {{$loans->account->account_no}}
+               គណនីលេខ <span class="number">{{$loans->account->account_no}}</span>
+
             </h4>
             <h4 class="form-header">
               <i class="fa fa-address-book-o"></i>
@@ -225,5 +227,11 @@
 @endsection
 
 @section('custom-script')
+ <script>
+   var cleave = new Cleave('.top_account_no', {
+     blocks: [2, 2, 2, 2],
+     uppercase: true
+   });
+ </script>
 
 @endsection

@@ -61,6 +61,8 @@ class LoanPaymentController extends Controller
           'redeem_amount'=>'nullable|numeric',
           'total_amount' =>'nullable|numeric'
         ]);
+        dd($request->all());
+        exit;
         // end validation
         // update loan
         $loans=Loans::findOrFail($id);
@@ -127,6 +129,7 @@ class LoanPaymentController extends Controller
        'keyword'=>'required|numeric'
      ]);
      $keyword=$request->keyword;
+
      $payment_types=PaymentTypes::where('account_type_id',AccountEnum::LOAN)->get();
      $accounts=Accounts::where('account_no',$keyword)->where('account_type_id',AccountEnum::LOAN)->get();
      $theme=Theme::findOrFail(1);

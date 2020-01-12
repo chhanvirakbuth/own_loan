@@ -107,11 +107,13 @@ class LoanController extends Controller
           'start_at'=>'required|date_format:Y-m-d',
           'close_at'=>'nullable|date_format:Y-m-d'
         ]);
+      
         // end check validation
         $account_type_id=AccountEnum::LOAN;
         $accountTypeItemId=$request->loan_type;
         $startAt=$request->start_at;
         $beginAmount=$request->begin_amount;
+        $rate=AccountTypeItems::findOrFail($accountTypeItemId);
 
         // let insert to Database
           $user = Auth::user();
@@ -166,11 +168,13 @@ class LoanController extends Controller
           $account->account_no=$code;
         }
         $account->actived=StatusEnum::ACTIVE;
+        $account->status=StatusEnum::ACTIVE;
         $account->created_by=$user->id;
         $account->save();
         $last_account_id=$account->id;
         //
            //to table loans
+
         $loans=new Loans();
         $loans->people_id=$last_people_id;
         $loans->account_id=$last_account_id;
@@ -180,7 +184,7 @@ class LoanController extends Controller
         $loans->closed_at=$request->close_at;
         $loans->begin_amount=$beginAmount;
         $loans->balance=$beginAmount;
-        $loans->interest_rate=$request->percent_rate;
+        $loans->interest_rate=$rate->interest_rate;
         $loans->created_by=$user->id;
         $loans->save();
 
@@ -308,12 +312,14 @@ class LoanController extends Controller
         $account->save();
 
         // update to table loan
+        $rate=AccountTypeItems::findOrFail($request->loan_type);
+
         $loans->account_type_item_id=$request->loan_type;
         $loans->started_at=$request->start_at;
         $loans->closed_at=$request->close_at;
         $loans->begin_amount=$request->begin_amount;
         $loans->balance=$request->balance;
-        $loans->interest_rate=$request->percent_rate;
+        $loans->interest_rate=$rate->interest_rate;
         $loans->updated_by=$user->id;
         $loans->save();
         DB::commit();

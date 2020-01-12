@@ -30,6 +30,9 @@ Route::group([
   'namespace'=>'Admin',
   ],function(){
 
+    // setting route
+    Route::get('/setting','App\SettingController@index')->name('admin.setting');
+    Route::post('/setting/{id}','App\SettingController@update')->name('admin.setting.update');
     //For Admin Home Page Controll
     Route::get('/','Main\HomeController@index')->name('admin.home');
 
