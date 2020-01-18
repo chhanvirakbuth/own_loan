@@ -62,6 +62,9 @@ class Loans extends Model
           $year=Carbon::parse($last_paid)->year;
           $month=Carbon::parse($last_paid)->month;
           if ($now->subMonth()->month ==$month) {
+            if ($this->balance == 0) {
+              return $value=false;
+            }
             return $value=true;
           }else {
             return $value=false;

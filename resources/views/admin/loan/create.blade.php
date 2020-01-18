@@ -46,17 +46,18 @@
             <div class="form-group row">
               <label for="input-1" class="col-sm-2 col-form-label">ឈ្មោះពេញ</label>
               <div class="col-sm-4">
-                <input type="text" class="form-control" id="input-1" name="full_name" placeholder="ជាអក្សរខ្មែរ">
+                <input type="text" class="form-control" id="input-1" name="full_name" placeholder="ជាអក្សរខ្មែរ" autocomplete="off">
               </div>
               <label for="input-2" class="col-sm-2 col-form-label">ឈ្មោះឡាតាំង</label>
               <div class="col-sm-4">
-                <input type="text" class="form-control" id="latin_name" name="latin_name" placeholder="ជាអក្សរឡាតាំង">
+                <input type="text" class="form-control" id="latin_name" name="latin_name" placeholder="ជាអក្សរឡាតាំង"
+                style="text-transform: uppercase;" autocomplete="off">
               </div>
             </div>
             <div class="form-group row">
               <label for="input-3" class="col-sm-2 col-form-label">ឈ្មោះហៅក្រៅ</label>
               <div class="col-sm-4">
-                <input type="text" class="form-control" id="input-3" name="nickname" placeholder="បើសិនជាមាន">
+                <input type="text" class="form-control" id="input-3" name="nickname" placeholder="បើសិនជាមាន" autocomplete="off">
               </div>
               <label for="input-4" class="col-sm-2 col-form-label">ភេទ</label>
                 <div class="icheck-material-primary icheck-inline">
@@ -157,7 +158,7 @@
                 <label for="input-16" class="col-sm-2 col-form-label">រូបបុគ្គលអ្នកខ្ចី</label>
                 <div class="col-sm-4">
                 <div class="fileinput fileinput-new" data-provides="fileinput">
-                    <div class="fileinput-new thumbnail" style="width: 100%; height: 100%;">
+                    <div class="fileinput-new thumbnail" style="max-width: 280px; max-height: 150px;">
                         <img src="http://placehold.it/150x150" alt="Photo">
                     </div>
                     <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 280px; max-height: 150px;"></div>
@@ -171,7 +172,7 @@
                 <label for="input-17" class="col-sm-2 col-form-label">រូបអត្តសញ្ញាណប័ណ្ណ</label>
                 <div class="col-sm-4">
                     <div class="fileinput fileinput-new" data-provides="fileinput">
-                        <div class="fileinput-new thumbnail" style="width: 100%; height: 100%;">
+                        <div class="fileinput-new thumbnail" style="max-width: 280px; max-height: 150px;">
                             <img src="http://placehold.it/150x150" alt="Photo">
                         </div>
                         <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 280px; max-height: 150px;"></div>
@@ -228,8 +229,8 @@
             </div>
 
             <div class="form-footer​">
-                <a onclick="history.back();" class="btn btn-light waves-effect waves-light mx-2"><i class="fa fa-times"></i> ថយក្រោយ</a>
-                <button type="submit" class="btn btn-light waves-effect waves-light mx-2"><i class="fa fa-check-square-o"></i> ស្នើរសុំ</button>
+                <a onclick="history.back();" class="btn btn-light waves-effect waves-light mx-2"><i class="zmdi zmdi-arrow-left"></i> ថយក្រោយ</a>
+                <button type="submit" class="btn btn-light waves-effect waves-light mx-2"> ស្នើរសុំ <i class="zmdi zmdi-arrow-right"></i></button>
             </div>
           </form>
         </div>
@@ -273,4 +274,5 @@
 
        });
     </script>
+
 @endsection

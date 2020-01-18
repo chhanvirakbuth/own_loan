@@ -17,11 +17,8 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+// Route::get('/admin', 'HomeController@index')->name('home')->middleware('auth');
 
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
 
 // main admin routes
 Route::group([
@@ -33,6 +30,9 @@ Route::group([
     // setting route
     Route::get('/setting','App\SettingController@index')->name('admin.setting');
     Route::post('/setting/{id}','App\SettingController@update')->name('admin.setting.update');
+    //profile route
+    Route::get('/profile','App\SettingController@profile')->name('admin.profile');
+    Route::post('/profile','App\SettingController@post')->name('admin.profile.post');
     //For Admin Home Page Controll
     Route::get('/','Main\HomeController@index')->name('admin.home');
 

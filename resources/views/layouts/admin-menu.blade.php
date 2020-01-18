@@ -10,7 +10,7 @@
   <meta name="author" content=""/>
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
-  <title>{{$theme->brand}} -@yield('title')</title>
+  <title>@yield('title')</title>
   <!--favicon-->
   <link rel="icon" href="{{asset('assets/images/favicon.ico')}}" type="image/x-icon">
   <!-- simplebar CSS-->
@@ -57,15 +57,15 @@
        <div class="media align-items-center user-pointer collapsed" data-toggle="collapse" data-target="#user-dropdown">
          <div class="avatar"><img class="mr-3 side-user-img" src="{{asset('assets/images/avatars/avatar-13.png')}}" alt="user avatar"></div>
           <div class="media-body">
-          <h6 class="side-user-name">@if (Auth::check()){{ Auth::user()->name }}@else Anyomous @endif</h6>
+          <h6 class="side-user-name text-uppercase">@if (Auth::check()){{ Auth::user()->name }}@else Anyomous @endif</h6>
          </div>
           </div>
         <div id="user-dropdown" class="collapse">
          <ul class="user-setting-menu">
-               <li><a href="javaScript:void();"><i class="icon-user"></i>  My Profile</a></li>
-               <li><a href="{{route('admin.setting')}}"><i class="icon-settings"></i> Setting</a></li>
+               <li><a href="{{route('admin.profile')}}"><i class="icon-user"></i>  ប្រូហ្វាល</a></li>
+               <li><a href="{{route('admin.setting')}}"><i class="icon-settings"></i> កំណត់</a></li>
                <li><a href="{{ route('logout') }}"onclick="event.preventDefault();
-                document.getElementById('logout-form').submit();"><i class="icon-power"></i> Logout</a>
+                document.getElementById('logout-form').submit();"><i class="icon-power"></i> ចាកចេញ</a>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                     @csrf
                 </form>

@@ -52,9 +52,9 @@
                           <td id="money">{{$loan->balance}} <span>&#6107;</span></td>
                           <td id="money"><?php echo $loan->begin_amount * $loan->interest_rate?> <span>&#6107;</span></td>
                           <td>@if ($loan->status == true)
-                            <i class="zmdi zmdi-close"></i>
+                            <i class="zmdi zmdi-close" data-toggle="tooltip" data-placement="top" title="មិនទាន់បង់"></i>
                           @else
-                            <i class="zmdi zmdi-check"></i>
+                            <i class="zmdi zmdi-check" data-toggle="tooltip" data-placement="top" title="បានបង់រួច"></i>
                           @endif</td>
                           <td>
                             <form class="" action="#" method="post">

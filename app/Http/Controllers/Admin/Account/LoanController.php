@@ -47,7 +47,7 @@ class LoanController extends Controller
       $theme=Theme::findOrFail(1);
       $date=date('y-m-d');
       $khmer = new KhmerDatetime($date);
-      $loans=Loans::with(['people','account','account_type_item'])->paginate(15);
+      $loans=Loans::where('balance','!=' , 0)->paginate(15);
       return view('admin.loan.index')->with('loans',$loans)->with('theme',$theme)
       ->with('khmer',$khmer);
     }
@@ -107,7 +107,7 @@ class LoanController extends Controller
           'start_at'=>'required|date_format:Y-m-d',
           'close_at'=>'nullable|date_format:Y-m-d'
         ]);
-      
+
         // end check validation
         $account_type_id=AccountEnum::LOAN;
         $accountTypeItemId=$request->loan_type;

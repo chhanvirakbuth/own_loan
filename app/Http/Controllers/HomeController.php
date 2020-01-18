@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Admin\App\Theme;
 class HomeController extends Controller
 {
     /**
@@ -23,6 +23,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $theme=Theme::findOrFail(1);
+        return view('layouts.admin-menu')->with('theme',$theme);
     }
 }

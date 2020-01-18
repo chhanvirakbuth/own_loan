@@ -7,9 +7,13 @@ use Illuminate\Http\Request;
 use App\Admin\App\Theme;
 use Session;
 use Auth;
+use App\User;
 class SettingController extends Controller
 {
     //
+    public function __construct(){
+      $this->middleware('auth');
+    }
     public function index(){
       $theme=Theme::findOrFail(1);
 
@@ -30,6 +34,34 @@ class SettingController extends Controller
       $theme->created_by=$user->id;
       $theme->save();
       Session::flash('success','ការកំណត់បានជោគជ័យ..');
+      return redirect()->route('admin.home');
+    }
+
+    // profile
+    public function profile(){
+      $theme=Theme::findOrFail(1);
+      $user=User::findOrFail(1);
+      return view('admin.app.setting.profile')->with('theme',$theme)
+      ->with('user',$user);
+    }
+
+    public function post(Request $request){
+      $this->validate($request,[
+        'images'=>'nullable|max:10240',
+        'full_name'=>'required|max:50',
+        'email'=>'required',
+        'old_password'=>'nullable',
+        'new_password'=>'nullable',
+        'confirm_new'=>'nullable'
+      ]);
+      $user=User::findOrFail(1);
+      $user->name=$request->full_name;
+      $user->email=$request->email;
+      if ($request->hasFile('images')) {
+        $user->image=$request->file('images')->store('users');
+      }
+      $user->save();
+      Session::flash('success','ប្ដូរប្រូហ្វាលបានជោគជ័យ!');
       return redirect()->route('admin.home');
     }
 }

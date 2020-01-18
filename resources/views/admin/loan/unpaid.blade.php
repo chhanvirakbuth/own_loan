@@ -1,5 +1,7 @@
 @extends('layouts.admin-menu')
-
+@section('title')
+  អ្នកមិនទាន់បង់ប្រាក់
+@endsection
 @section('custom-css')
   <link rel="stylesheet" href="{{asset('assets/css/custom-css.css')}}">
 
@@ -63,20 +65,14 @@
                                 </form>
                               </td>
                           </tr>
-                        @else
-                          <tr>
-                            <td colspan="8" class="text-center">គ្មានទិន្ន័យត្រូវបង្ហាញទេ!</td>
-                          </tr>
+
                         @endif
 
                       @php
                         $i++;
                       @endphp
                       @endforeach
-                    @else
-                      <tr>
-                        <td colspan="8" class="text-center">គ្មានទិន្ន័យត្រូវបង្ហាញទេ!</td>
-                      </tr>
+
                     @endif
                   </tbody>
                 </table>

@@ -42,6 +42,7 @@
 *::before,
 *::after {
   box-sizing: border-box;
+  
 }
 
 html {
@@ -11355,4 +11356,3 @@ a.text-dark:focus {
     border-color: #dee2e6;
   }
 }
-

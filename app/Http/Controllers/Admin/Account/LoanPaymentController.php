@@ -58,20 +58,36 @@ class LoanPaymentController extends Controller
           'payment_type'=>'required|numeric',
           'payment_rate'=>'required',
           'rate_amount' =>'required|max:50',
-          'redeem_amount'=>'nullable|numeric',
-          'total_amount' =>'nullable|numeric'
+          'redeem_amount'=>'nullable',
+          'total_amount' =>'nullable'
         ]);
-        dd($request->all());
-        exit;
+
+        // need to be change
         // end validation
         // update loan
         $loans=Loans::findOrFail($id);
         // declearation
+        // some condition and declearation
+        if ($request->hidden_redeem_amount != null) {
+          if ($request->hidden_redeem_amount > $request->hidden_main_amount) {
+            Session::flash('error','បង់រំលោះមិនអាចលើសប្រាក់ជំពាក់ទេ');
+            return redirect()->back();
+          }
+          $redeem_amount=$request->hidden_redeem_amount;
+        }else {
+          $redeem_amount=0;
+        }
+        // if user select pay off
+        if ($request->payment_type == 4) {
+          $redeem_amount=$loans->balance;
+        }
+        // dd($redeem_amount);
+        // exit;
+
         $user = Auth::user();
         $beginAmount=$loans->begin_amount;
         $last_amount=$loans->balance;
         $rate=$loans->interest_rate;
-        $redeem_amount=$request->redeem_amount;
         $number_of_paid=$loans->n_of_paid_interest + 1;
         $current_Date=Carbon::now();
         $new_balance=$last_amount - $redeem_amount;
@@ -83,9 +99,8 @@ class LoanPaymentController extends Controller
         $account_no=$loans->account->account_no;
         $user_id=$user->id;
         // end of declearation
-          // update loan
-        // dd($request->all());
-        // exit;
+
+        // update loan
 
         $loans->balance=$new_balance;
         $loans->n_of_paid_interest=$number_of_paid;

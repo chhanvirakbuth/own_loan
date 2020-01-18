@@ -14,7 +14,7 @@ class Theme extends Model
   // mass assignment
   protected $fillable=['name','created_by','brand','logo'];
 
-  // accessor
+  // accessor and mutator
   public function getLogoAttribute($value){
     return('storage/'.$value);
   }
@@ -23,4 +23,7 @@ class Theme extends Model
     return $value;
   }
 
+  public function getNameAttribute($value){
+    return $value;
+  }
 }

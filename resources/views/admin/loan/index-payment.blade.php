@@ -1,5 +1,7 @@
 @extends('layouts.admin-menu')
-
+@section('title')
+  បង់ការប្រាក់
+@endsection
 @section('custom-css')
 
   <link rel="stylesheet" href="{{asset('assets/css/custom-css.css')}}">
