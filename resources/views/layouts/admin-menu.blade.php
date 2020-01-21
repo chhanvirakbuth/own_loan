@@ -55,7 +55,7 @@
       </div>
       <div class="user-details">
        <div class="media align-items-center user-pointer collapsed" data-toggle="collapse" data-target="#user-dropdown">
-         <div class="avatar"><img class="mr-3 side-user-img" src="{{asset('assets/images/avatars/avatar-13.png')}}" alt="user avatar"></div>
+         <div class="avatar"><img class="mr-3 side-user-img" src="{{asset(Auth::user()->image)}}" alt="user avatar"></div>
           <div class="media-body">
           <h6 class="side-user-name text-uppercase">@if (Auth::check()){{ Auth::user()->name }}@else Anyomous @endif</h6>
          </div>
@@ -116,6 +116,30 @@
 
            </ul>
          </li>
+
+         <li>
+        <a href="javaScript:void();" class="waves-effect">
+          <i class="zmdi zmdi-chart"></i> <span>របាយការណ៍កម្ចី</span>
+          <i class="fa fa-angle-left float-right"></i>
+        </a>
+        <ul class="sidebar-submenu">
+          <li><a href="#"><i class="zmdi zmdi-dot-circle-alt"></i> កម្ចីតាមឈ្មោះ</a></li>
+          <li><a href="charts-apex.html"><i class="zmdi zmdi-dot-circle-alt"></i> តាមខែ</a></li>
+          <li><a href="{{route('reports.loan.index')}}"><i class="zmdi zmdi-dot-circle-alt"></i> ទាំងអស់</a></li>
+
+        </ul>
+       </li>
+     <li>
+        <a href="javaScript:void();" class="waves-effect">
+          <i class="zmdi zmdi-invert-colors"></i> <span>របាយការណ៍សន្សំ</span>
+          <i class="fa fa-angle-left float-right"></i>
+        </a>
+        <ul class="sidebar-submenu">
+          <li><a href="charts-chartjs.html"><i class="zmdi zmdi-dot-circle-alt"></i> តាមឈ្មោះ</a></li>
+          <li><a href="charts-apex.html"><i class="zmdi zmdi-dot-circle-alt"></i> តាមខែ</a></li>
+          <li><a href="charts-sparkline.html"><i class="zmdi zmdi-dot-circle-alt"></i> ទាំងអស់</a></li>
+        </ul>
+      </li>
 
        </ul>
 
@@ -258,13 +282,13 @@
        </li>
        <li class="nav-item">
          <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" data-toggle="dropdown" href="#">
-           <span class="user-profile"><img src="{{asset('assets/images/avatars/avatar-13.png')}}" class="img-circle" alt="user avatar"></span>
+           <span class="user-profile"><img src="{{asset(Auth::user()->image)}}" class="img-circle" alt="user avatar"></span>
          </a>
          <ul class="dropdown-menu dropdown-menu-right">
           <li class="dropdown-item user-details">
            <a href="javaScript:void();">
               <div class="media">
-                <div class="avatar"><img class="align-self-start mr-3" src="{{asset('assets/images/avatars/avatar-13.png')}}" alt="user avatar"></div>
+                <div class="avatar"><img class="align-self-start mr-3" src="{{asset(Auth::user()->image)}}" alt="user avatar"></div>
                <div class="media-body">
                <h6 class="mt-2 user-title">@if (Auth::check()){{ Auth::user()->name }}@else Anyomous @endif</h6>
                <p class="user-subtitle">@if (Auth::check()){{ Auth::user()->email }}@else Anyomous @endif</p>

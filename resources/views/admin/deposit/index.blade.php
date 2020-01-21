@@ -32,8 +32,8 @@
                       <th scope="col">ឈ្មោះ</th>
                       <th scope="col">ភេទ</th>
                       <th scope="col">លេខគណនី</th>
-                      <th scope="col">ដាក់សន្សំ</th>
                       <th scope="col">សន្សំសរុប</th>
+                      <th scope="col">ការប្រាក់ទទួលបាន</th>
                       <th scope="col">ស្ថានភាព</th>
                       <th scope="col">ផ្សេងៗ</th>
                     </tr>
@@ -49,17 +49,17 @@
                           <td>{{$deposit->people->name_kh}}</td>
                           <td>{{$deposit->people->gender->name_kh}}</td>
                           <td>{{$deposit->account->account_no}}</td>
-                          <td id="money">{{$deposit->begin_amount}} <span>&#6107;</span></td>
                           <td id="money">{{$deposit->balance}} <span>&#6107;</span></td>
+                          <td id="money">{{$deposit->balance * $deposit->interest_rate}} <span>&#6107;</span></td>
                           <td>@if ($deposit->status == true)
-                            <i class="zmdi zmdi-close"></i>
+                            <i class="zmdi zmdi-close"  data-toggle="tooltip" data-placement="top" title="មិនទាន់សន្សំ"></i>
                           @else
-                            <i class="zmdi zmdi-check"></i>
+                            <i class="zmdi zmdi-check"  data-toggle="tooltip" data-placement="top" title="សន្សំរួច"></i>
                           @endif</td>
                           <td>
                             <form class="" action="#" method="post">
-                              <a href="#" class="btn btn-light btn-sm waves-effect waves-light m-1 " data-toggle="tooltip" data-placement="top" title="លម្អិត" > <i class="zmdi zmdi-eye"></i></a>
-                              <a href="#" class="btn btn-light btn-sm waves-effect waves-light m-1 " data-toggle="tooltip" data-placement="top" title="សន្សំ"> <i class="zmdi zmdi-money"></i></a>
+                              <a href="{{route('deposit.detail',$deposit->id)}}" class="btn btn-light btn-sm waves-effect waves-light m-1 " data-toggle="tooltip" data-placement="top" title="លម្អិត" > <i class="zmdi zmdi-eye"></i></a>
+                              <a href="{{route('deposit.add',$deposit->id)}}" class="btn btn-light btn-sm waves-effect waves-light m-1 " data-toggle="tooltip" data-placement="top" title="សន្សំ"> <i class="zmdi zmdi-money"></i></a>
                               <a href="#" class="btn btn-light btn-sm waves-effect waves-light m-1 " data-toggle="tooltip" data-placement="top" title="កែប្រែ"> <i class="zmdi zmdi-edit"></i></a>
                             </form>
                           </td>
@@ -95,4 +95,5 @@
 
     $(" table tbody tr td#money").digits();
   </script>
+
 @endsection

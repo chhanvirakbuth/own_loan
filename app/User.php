@@ -39,6 +39,9 @@ class User extends Authenticatable
 
     // mutator and accessor
     public function getImageAttribute($value){
+      if ($value == null) {
+        return $value='http://placehold.it/150x150';
+      }
       return ('storage/'.$value);
     }
 }

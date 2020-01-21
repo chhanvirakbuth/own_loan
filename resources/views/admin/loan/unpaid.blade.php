@@ -47,7 +47,11 @@
                         @if ($loan->status == true)
                           <tr>
                               <th scope="row"><?php echo $i;?></th>
-                              <td>{{$loan->people->name_kh}}</td>
+                              <td>{{$loan->people->name_kh}}
+                                @if ($loan->n_of_paid_interest == null)
+                                  <small class="badge float-right badge-warning">ថ្មី</small>
+                                @endif
+                              </td>
                               <td>{{$loan->people->gender->name_kh}}</td>
                               <td>{{$loan->account->account_no}}</td>
                               <td id="money">{{$loan->balance}} <span>&#6107;</span></td>

@@ -51,7 +51,7 @@ class Deposits extends Model
     }
 
     // belong to account type items
-    public function account_type_items(){
+    public function account_type_item(){
       return $this->belongsTo(AccountTypeItems::class);
     }
     // ####################end relationship :( ##############################

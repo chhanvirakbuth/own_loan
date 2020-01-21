@@ -84,6 +84,7 @@
     }(jQuery));
 
     $(document).ready(function() {
+      $('#keyword').focus();
       $("#keyword").inputFilter(function(value) {
         return /^\d*$/.test(value);    // Allow digits only, using a RegExp
       });

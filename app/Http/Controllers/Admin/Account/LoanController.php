@@ -234,7 +234,7 @@ class LoanController extends Controller
       ->with('villages',$villages);
     }
 
-    // update loan
+    // update loan Edit account loan
     public function update(Request $request, $id){
       try {
         DB::beginTransaction();

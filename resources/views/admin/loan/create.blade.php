@@ -255,8 +255,8 @@
     {{-- cleave --}}
     <script>
       var cleave = new Cleave('.input-phone', {
-        phone: true,
-        phoneRegionCode: 'KH'
+        blocks: [3, 2, 2, 3],
+        uppercase: true
       });
 
 

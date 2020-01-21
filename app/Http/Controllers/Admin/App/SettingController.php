@@ -4,10 +4,13 @@ namespace App\Http\Controllers\Admin\App;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use App\Rules\MatchOldPassword;
 use App\Admin\App\Theme;
 use Session;
 use Auth;
 use App\User;
+
 class SettingController extends Controller
 {
     //
@@ -50,15 +53,20 @@ class SettingController extends Controller
         'images'=>'nullable|max:10240',
         'full_name'=>'required|max:50',
         'email'=>'required',
-        'old_password'=>'nullable',
-        'new_password'=>'nullable',
-        'confirm_new'=>'nullable'
+        'old_password'=>['nullable', new MatchOldPassword],
+        'new_password'=>'nullable|min:8',
+        'confirm_new'=>['same:new_password'],
       ]);
+      // dd('yes');
+      // exit;
       $user=User::findOrFail(1);
       $user->name=$request->full_name;
       $user->email=$request->email;
       if ($request->hasFile('images')) {
         $user->image=$request->file('images')->store('users');
+      }
+      if ($request->new_password !=null) {
+        $user->password=Hash::make($request->new_password);
       }
       $user->save();
       Session::flash('success','ប្ដូរប្រូហ្វាលបានជោគជ័យ!');

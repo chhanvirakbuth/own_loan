@@ -49,91 +49,67 @@ class LoanPaymentController extends Controller
       ->with('theme',$theme);
     }
 
-    // loan payment update
+    // #### loan payment update of index view####
     public function update(Request $request,$id){
+      $this->validate($request,[
+        'payment_type'=>'required',
+        'hidden_redeem_amount'=>'nullable|numeric',
+        'hidden_main_amount'=>'nullable'
+      ]);
       try {
         DB::beginTransaction();
-        // dd($request->all());
-        $this->validate($request,[
-          'payment_type'=>'required|numeric',
-          'payment_rate'=>'required',
-          'rate_amount' =>'required|max:50',
-          'redeem_amount'=>'nullable',
-          'total_amount' =>'nullable'
-        ]);
-
-        // need to be change
-        // end validation
-        // update loan
-        $loans=Loans::findOrFail($id);
-        // declearation
-        // some condition and declearation
-        if ($request->hidden_redeem_amount != null) {
-          if ($request->hidden_redeem_amount > $request->hidden_main_amount) {
+        $loan=Loans::findOrFail($id);
+        // check condition
+        if ($request->payment_type == PaymentTypeEnum::REDEEM) { //if was redeem
+          $redeem=$request->hidden_redeem_amount;
+          if($redeem > $loan->balance){
             Session::flash('error','បង់រំលោះមិនអាចលើសប្រាក់ជំពាក់ទេ');
             return redirect()->back();
           }
-          $redeem_amount=$request->hidden_redeem_amount;
-        }else {
-          $redeem_amount=0;
         }
-        // if user select pay off
-        if ($request->payment_type == 4) {
-          $redeem_amount=$loans->balance;
+        if ($request->payment_type == PaymentTypeEnum::PAY_OFF) { //if was pay off
+          $redeem=$loan->balance;
         }
-        // dd($redeem_amount);
-        // exit;
-
-        $user = Auth::user();
-        $beginAmount=$loans->begin_amount;
-        $last_amount=$loans->balance;
-        $rate=$loans->interest_rate;
-        $number_of_paid=$loans->n_of_paid_interest + 1;
-        $current_Date=Carbon::now();
-        $new_balance=$last_amount - $redeem_amount;
-        $total_paid=($last_amount * $rate)+$redeem_amount; //amount paid
-        $people_id=$loans->people->id;
-        $account_id=$loans->account->id;
-        $loan_id=$loans->id;
-        $payment_type_id=$request->payment_type;
-        $account_no=$loans->account->account_no;
-        $user_id=$user->id;
-        // end of declearation
-
+        if ($request->payment_type== PaymentTypeEnum::LOAN_INTEREST) { //if was interest
+          $redeem=0;
+        }
         // update loan
+        $interest=$loan->balance * $loan->interest_rate;
+        $total=$interest + $redeem;
 
-        $loans->balance=$new_balance;
-        $loans->n_of_paid_interest=$number_of_paid;
-        $loans->last_paid_interest_at=$current_Date;
-        $loans->status=LoanStatusEnum::PAID;
-        $loans->updated_by=$user_id;
-        $loans->save();
+        $loan->balance-=$redeem;
+        $loan->n_of_paid_interest+=1;
+        $loan->last_paid_interest_at=Carbon::now();
+        $loan->status=LoanStatusEnum::PAID;
+        $loan->updated_by=Auth::user()->id;
+        $loan->save();
 
-        // create payment transactions
-        $transactions=new PaymentTransactions();
-        $balance=$loans->balance;
+        // create transactions
+        $trans=new PaymentTransactions();
+        $p_type=PaymentTypes::findOrFail($request->payment_type);
 
-        $transactions->people_id=$people_id;
-        $transactions->loan_id=$loan_id;
-        $transactions->account_id=$account_id;
-        $transactions->status=LoanStatusEnum::PAID;
-        $transactions->payment_type_id=$payment_type_id;
-        $transactions->payment_date=$current_Date;
-        $transactions->account_no=$account_no;
-        $transactions->begin_amount=$beginAmount;
-        $transactions->amount=$total_paid;
-        $transactions->balance=$balance;
-        $transactions->transaction_at=$current_Date;
-        $transactions->actived=StatusEnum::ACTIVE;
-        $transactions->created_by=$user_id;
-        $transactions->save();
+        $trans->people_id=$loan->people->id;
+        $trans->loan_id=$loan->id;
+        $trans->account_id=$loan->account->id;
+        $trans->status=LoanStatusEnum::PAID;
+        $trans->payment_type=$p_type->name_kh;
+        $trans->payment_type_id=$p_type->id;
+        $trans->payment_date=Carbon::now();
+        $trans->account_no=$loan->account->account_no;
+        $trans->begin_amount=$redeem;
+        $trans->amount=$total;
+        $trans->balance=$loan->balance;
+        $trans->transaction_at=Carbon::now();
+        $trans->actived=StatusEnum::ACTIVE;
+        $trans->created_by=Auth::user()->id;
+        $trans->save();
+
         DB::commit();
         Session::flash('success','បង់ប្រាក់រួចរាល់!');
         return redirect(route('admin.loan.index'));
+
       } catch (Exception $e) {
         DB::rollback();
-        Session::flash('info','បរាជ័យក្នុងការបង់!');
-        return redirect()->back();
       }
 
     }
@@ -232,6 +208,8 @@ class LoanPaymentController extends Controller
         $transactions->loan_id=$loan_id;
         $transactions->account_id=$account_id;
         $transactions->status=LoanStatusEnum::PAID;
+        $payment_type=PaymentTypes::findOrFail($request->payment_type);
+        $transactions->payment_type=$payment_type->name_kh;
         $transactions->payment_type_id=$request->payment_type;
         $transactions->payment_date=$current_Date;
         $transactions->account_no=$account_no;

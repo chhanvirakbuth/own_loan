@@ -54,9 +54,11 @@ class PaymentTransactions extends Model
       return $this->belongsTo(Accounts::class);
     }
 
-    // belong to payment type
+    // // belong to payment type
     public function payment_type(){
       return $this->belongsTo(PaymentTypes::class);
     }
+
+
     // ###################end relationship#####################################
 }

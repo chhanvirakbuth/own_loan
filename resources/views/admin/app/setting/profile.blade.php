@@ -48,7 +48,7 @@
           <div class="col-sm-4">
             <div class="fileinput fileinput-new mx-5" data-provides="fileinput">
                 <div class="fileinput-new thumbnail" style="max-width: 150px; max-height: 150px; border-radius: 50%;">
-                  <img src="{{asset($user->image) ?? 'http://placehold.it/150x150'}}" alt="Photo" style="display: block;
+                  <img src="{{asset($user->image)}}" alt="Photo" style="display: block;
                     margin-left: auto;
                     margin-right: auto;
                     width: 100%;">
@@ -64,37 +64,39 @@
           <div class="col-sm-4">
             <div class="form-group">
             <label for="input-1">ឈ្មោះពេញ</label>
-            <input type="text" class="form-control" name="full_name" id="input-1" value="{{$user->name}}" placeholder="បញ្ចូលឈ្មោះរបស់អ្នក">
+            <input type="text" class="form-control" name="full_name" id="input-2" value="{{$user->name}}" placeholder="បញ្ចូលឈ្មោះរបស់អ្នក">
            </div>
            <div class="form-group">
            <label for="input-1">អ៊ីម៉ែល</label>
-           <input type="email" class="form-control" name="email" id="input-1" value="{{$user->email}}" placeholder="បញ្ចូលអ៊ីម៉ែលរបស់អ្នក">
+           <input type="email" class="form-control" name="email" id="input-3" value="{{$user->email}}" placeholder="បញ្ចូលអ៊ីម៉ែលរបស់អ្នក">
           </div>
-          <button type="button" id="button_password" class="btn btn-light waves-effect waves-light my-2" name="button">ប្ដូរពាក្យសម្ងាត់</button>
+          {{-- <button type="button"  class="btn btn-light waves-effect waves-light my-2" name="button"></button> --}}
+
+          <label id="button_password" style="cursor:pointer; text-decoration:underline ">ប្ដូរពាក្យសម្ងាត់</label>
           <div class="password_toggle" id="password_toggle" style="display:none;">
             <div class="form-group mt-2">
               <div class="position-relative has-icon-right">
-                <input type="password" class="form-control" name="old_password" id="input-1" placeholder="ពាក្យសម្ងាត់ចាស់" autocomplete="current-password">
+                <input type="password" class="form-control old_password" name="old_password"  placeholder="ពាក្យសម្ងាត់ចាស់" autocomplete="current-password">
                 <div class="form-control-position">
-      					  <i toggle="#password-field" class="fa fa-fw fa-eye toggle-password" style="cursor:pointer"></i>
+      					  <i toggle="#password-field" class="fa fa-fw fa-eye toggle-password" id="old_password" style="cursor:pointer"></i>
       				  </div>
               </div>
            </div>
 
            <div class="form-group">
              <div class="position-relative has-icon-right">
-               <input type="password" class="form-control" name="new_password" id="input-1"  placeholder="ពាក្យសម្ងាត់ថ្មី" autocomplete="current-password">
+               <input type="password" class="form-control new_password" name="new_password" id="input-5"  placeholder="ពាក្យសម្ងាត់ថ្មី" autocomplete="current-password">
                <div class="form-control-position">
-     					  <i toggle="#password-field" class="fa fa-fw fa-eye toggle-password" style="cursor:pointer"></i>
+     					  <i toggle="#password-field" class="fa fa-fw fa-eye toggle-password" id="new_password" style="cursor:pointer"></i>
      				  </div>
              </div>
           </div>
 
           <div class="form-group">
           <div class="position-relative has-icon-right">
-            <input type="password" class="form-control" id="input-1" name="confirm_new"  placeholder="បញ្ជាក់ពាក្យសម្ងាត់ថ្មី" autocomplete="current-password">
+            <input type="password" class="form-control confirm_new"  name="confirm_new"  placeholder="បញ្ជាក់ពាក្យសម្ងាត់ថ្មី" autocomplete="current-password">
             <div class="form-control-position">
-  					  <i toggle="#password-field" class="fa fa-fw fa-eye toggle-password" style="cursor:pointer"></i>
+  					  <i toggle="#password-field" class="fa fa-fw fa-eye toggle-password" id="confirm_new" style="cursor:pointer"></i>
   				  </div>
           </div>
          </div>
@@ -124,20 +126,15 @@
   <script src="{{asset('assets/plugins/jquery-validation/js/jquery.validate.min.js')}}"></script>
 
   <script type="text/javascript">
-  $("#settingForm").validate({
-      rules: {
-          brand:{
-            required:true,
-            maxlength:20,
-          }
-
+  $("#profileForm").validate({
+      rules:{
+        full_name:"required",
+        email:"required",
 
       },
-      messages: {
-          brand:{
-            required:"សូមបញ្ចូលឈ្មោះកម្មវិធី",
-            maxlength:"អក្សរត្រូវតិចជាងឬស្មើ២០"
-          }
+      messages:{
+        full_name:"សូមបញ្ចូលឈ្មោះអ្នក",
+        email:"សូមបញ្ចូលអ៊ីម៉ែលអ្នក",
 
       }
   });
@@ -147,5 +144,18 @@
       $("#button_password").click(function(){
           $("#password_toggle").toggle();
       });
+  </script>
+  <script type="text/javascript">
+    $("body").on('click', '.toggle-password', function() {
+      $(this).toggleClass("fa-eye fa-eye-slash");
+
+      var id=$(this).attr('id');
+      var input=$('.'+id);
+      if (input.attr("type") === "password") {
+        input.attr("type", "text");
+      } else {
+        input.attr("type", "password");
+      }
+    });
   </script>
 @endsection

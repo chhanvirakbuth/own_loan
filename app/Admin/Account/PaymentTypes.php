@@ -26,5 +26,7 @@ class PaymentTypes extends Model
     public function payment_transactions(){
       return $this->hasMany(PaymentTransactions::class);
     }
+
+
     // #####################end of relationship ##############################
 }

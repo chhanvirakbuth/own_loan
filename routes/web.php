@@ -81,6 +81,21 @@ Route::group([
         Route::get('/','DepositController@index')->name('deposit.index');
         Route::get('/register','DepositController@create')->name('deposit.create');
         Route::post('/','DepositController@store')->name('deposit.post');
+        // on index page
+        Route::get('/detail/{id}','DepositController@detail')->name('deposit.detail');
+        // add more saving
+        Route::get('/add/{id}','DepositPayController@add')->name('deposit.add');
+        Route::put('/add/{id}','DepositPayController@update')->name('deposit.add.update');
+      });
+
+      // route group for report
+      Route::group([
+        'prefix'=>'reports',
+        'namespace'=>'Reports'
+      ],function(){
+        // route group for loan reports
+        Route::get('/loans','LoanReportController@index')->name('reports.loan.index');
+        Route::get('/loans/{id}/detail','LoanReportController@detail')->name('reports.loan.detail');
       });
 });
 

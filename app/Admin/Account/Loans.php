@@ -7,10 +7,11 @@ use App\Admin\Customer\People;
 use App\Admin\Account\Accounts;
 use App\Admin\Account\AccountTypeItems;
 use App\Admin\Account\PaymentTransactions;
-
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
 class Loans extends Model
 {
+    use SoftDeletes ;
     // table mapping
     protected $table='acc_loans';
     protected $hidden=['created_at','deleted_at','updated_at'];
@@ -32,7 +33,13 @@ class Loans extends Model
       'created_by',
       'updated_by'
     ];
-
+    protected $dates = [
+    'created_at',
+    'updated_at',
+    'deleted_at',
+    'last_paid_interest_at'
+        // your other new column
+    ];
     // #########################relationship#################################
       // belongsTo people one to many
       public function people(){
@@ -54,7 +61,7 @@ class Loans extends Model
         return $this->hasMany(PaymentTransactions::class);
       }
       // #####################end relationship###############################
-      // accessor
+      // Accessors & Mutators
       public function getStatusAttribute($value){
         $now=Carbon::now();
         $last_paid=$this->last_paid_interest_at;
@@ -73,5 +80,12 @@ class Loans extends Model
 
         return $value;
 
+      }
+
+      public function getNOfPaidInterestAttribute($value){
+        if ($value == null) {
+          return $value=0;
+        }
+        return $value;
       }
 }

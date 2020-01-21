@@ -142,7 +142,7 @@ class DepositController extends Controller
         $deposits=new Deposits();
         $deposits->people_id=$last_people_id;
         $deposits->account_id=$last_account_id;
-        $deposits->status=StatusEnum::INACTIVE; //mean that already saving 
+        $deposits->status=StatusEnum::INACTIVE; //mean that already saving
         $deposits->account_type_item_id=$request->loan_type;
         $deposits->started_at=$request->start_at;
         $deposits->begin_amount=$request->begin_amount;
@@ -158,6 +158,13 @@ class DepositController extends Controller
         DB::rollback();
       }
 
+    }
 
+    // for detail view
+    public function detail($id){
+      $theme=Theme::findOrFail(1);
+      $deposit=Deposits::findOrFail($id);
+      return view('admin.deposit.detail')
+        ->with('theme',$theme)->with('deposit',$deposit);
     }
 }

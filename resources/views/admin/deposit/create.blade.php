@@ -44,7 +44,7 @@
               </div>
               <label for="input-2" class="col-sm-2 col-form-label">ឈ្មោះឡាតាំង</label>
               <div class="col-sm-4">
-                <input type="text" class="form-control" id="latin_name" name="latin_name" placeholder="ជាអក្សរឡាតាំង">
+                <input type="text" class="form-control text text-uppercase" id="latin_name" name="latin_name" placeholder="ជាអក្សរឡាតាំង">
               </div>
             </div>
             <div class="form-group row">
@@ -105,7 +105,7 @@
               </div>
               <label for="input-10" class="col-sm-2 col-form-label">អ៊ីម៉ែល</label>
               <div class="col-sm-4">
-                <input type="email" class="form-control" id="email" name="email">
+                <input type="email" class="form-control" id="email" name="email" autocomplete="off" placeholder="អត់ក៏បាន">
               </div>
             </div>
 
@@ -170,7 +170,7 @@
                         </div>
                         <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 280px; max-height: 150px;"></div>
                         <div class="text-center">
-                            <span class="btn btn-light waves-effect waves-light btn-file"><span class="fileinput-new">រើសរូបភាព</span><span class="fileinput-exists">ប្ដូររូបភាព</span><input type="file" name="id_card"></span>
+                            <span class="btn btn-light waves-effect waves-light btn-file"><span class="fileinput-new"><a>រើសរូបភាព</a></span><span class="fileinput-exists"><a>ប្ដូររូបភាព</a></span><input type="file" name="id_card"></span>
                             <a href="#" class="btn btn-light waves-effect waves-light fileinput-exists" data-dismiss="fileinput">លុបចេញ</a>
                         </div>
                     </div>
@@ -239,8 +239,8 @@
       {{-- cleave --}}
       <script>
         var cleave = new Cleave('.input-phone', {
-          phone: true,
-          phoneRegionCode: 'KH'
+          blocks: [3, 2, 2, 3],
+          uppercase: true
         });
 
 
