@@ -49,8 +49,8 @@
                           <td>{{$deposit->people->name_kh}}</td>
                           <td>{{$deposit->people->gender->name_kh}}</td>
                           <td>{{$deposit->account->account_no}}</td>
-                          <td id="money">{{$deposit->balance}} <span>&#6107;</span></td>
-                          <td id="money">{{$deposit->balance * $deposit->interest_rate}} <span>&#6107;</span></td>
+                          <td><span class="badge badge-success">{{number_format($deposit->balance)}} &#6107;</span></td>
+                          <td><span​ class="badge badge-warning">{{number_format($deposit->balance * $deposit->interest_rate)}} &#6107;</span></td>
                           <td>@if ($deposit->status == true)
                             <i class="zmdi zmdi-close"  data-toggle="tooltip" data-placement="top" title="មិនទាន់សន្សំ"></i>
                           @else
@@ -58,9 +58,9 @@
                           @endif</td>
                           <td>
                             <form class="" action="#" method="post">
-                              <a href="{{route('deposit.detail',$deposit->id)}}" class="btn btn-light btn-sm waves-effect waves-light m-1 " data-toggle="tooltip" data-placement="top" title="លម្អិត" > <i class="zmdi zmdi-eye"></i></a>
-                              <a href="{{route('deposit.add',$deposit->id)}}" class="btn btn-light btn-sm waves-effect waves-light m-1 " data-toggle="tooltip" data-placement="top" title="សន្សំ"> <i class="zmdi zmdi-money"></i></a>
-                              <a href="#" class="btn btn-light btn-sm waves-effect waves-light m-1 " data-toggle="tooltip" data-placement="top" title="កែប្រែ"> <i class="zmdi zmdi-edit"></i></a>
+                              <a href="{{route('deposit.detail',$deposit->account->account_no)}}" class="btn btn-light btn-sm waves-effect waves-light m-1 " data-toggle="tooltip" data-placement="top" title="លម្អិត" > <i class="zmdi zmdi-eye"></i></a>
+                              <a href="{{route('deposit.add',$deposit->account->account_no)}}" class="btn btn-light btn-sm waves-effect waves-light m-1 " data-toggle="tooltip" data-placement="top" title="សន្សំ"> <i class="zmdi zmdi-money"></i></a>
+                              <a href="{{route('deposit.edit',$deposit->account->account_no)}}" class="btn btn-light btn-sm waves-effect waves-light m-1 " data-toggle="tooltip" data-placement="top" title="កែប្រែ"> <i class="zmdi zmdi-edit"></i></a>
                             </form>
                           </td>
                       </tr>
@@ -86,7 +86,7 @@
 
 @section('custom-script')
   {{-- currency format comma --}}
-  <script type="text/javascript">
+  {{-- <script type="text/javascript">
     $.fn.digits = function(){
       return this.each(function(){
           $(this).text( $(this).text().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") );
@@ -94,6 +94,6 @@
     }
 
     $(" table tbody tr td#money").digits();
-  </script>
+  </script> --}}
 
 @endsection

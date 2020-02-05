@@ -13,7 +13,7 @@
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
 
 Auth::routes();
 
@@ -23,7 +23,7 @@ Auth::routes();
 // main admin routes
 Route::group([
   'prefix'=>'admin',
-  'middleware'=>'auth',
+  'middleware'=>['auth', 'is_admin'],
   'namespace'=>'Admin',
   ],function(){
 
@@ -67,8 +67,7 @@ Route::group([
       Route::get('payment','LoanPaymentController@index')->name('admin.loan.payment-index');
       // search loan account number
       Route::post('/search','LoanPaymentController@search')->name('admin.loan.payment-search');
-      // update loan by search
-      Route::put('/payment/update/{id}','LoanPaymentController@search_update')->name('admin.loan.payment-update.search');
+
       // for get Rate
       Route::get('rate/{id}','LoanController@getLoanRate')->name('admin.loan.rate');
 
@@ -86,6 +85,23 @@ Route::group([
         // add more saving
         Route::get('/add/{id}','DepositPayController@add')->name('deposit.add');
         Route::put('/add/{id}','DepositPayController@update')->name('deposit.add.update');
+        // editing view
+        Route::get('/{id}/edit','DepositController@edit')->name('deposit.edit');
+        // updating account inforamtion
+        Route::put('/{id}/update','DepositController@updateAccount')->name('deposit.update');
+        // searching view
+        Route::get('/search','DepositController@search')->name('deposit.search');
+        // searching result
+        Route::post('/search','DepositController@result')->name('deposit.search.result');
+        // saving deposit account
+        Route::put('/search/{account}/save','DepositPayController@save')->name('deposit.save');
+
+        // withdraw
+        Route::get('/withdraw','DepositPayController@search_withdraw')->name('deposit.withdraw');
+        // searching result
+        Route::post('/withdraw','DepositPayController@search_withdraw_result')->name('deposit.withdraw.result');
+        // process withdraw
+        Route::put('/withdraw/{account_no}','DepositPayController@withdraw')->name('deposit.withdraw.process');
       });
 
       // route group for report
@@ -96,7 +112,23 @@ Route::group([
         // route group for loan reports
         Route::get('/loans','LoanReportController@index')->name('reports.loan.index');
         Route::get('/loans/{id}/detail','LoanReportController@detail')->name('reports.loan.detail');
+
+        Route::get('/loans/all','LoanReportController@loaner')->name('reports.loan.all');
+        Route::delete('/loans/{id}','LoanReportController@softDelete')->name('reports.loan.softDelete'); //for soft delete
       });
+
+      // route for dashboard
+      Route::group([
+        'prefix'=>'dashboard',
+        'namespace'=>'Dashboard'
+      ],function(){
+        // route group for loan reports
+        Route::get('/','DashboardController@index')->name('dashboard.index');
+        Route::get('/loan','DashboardController@loan')->name('dashboard.loan');
+
+
+      });
+
 });
 
 // get Address route

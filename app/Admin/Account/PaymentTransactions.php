@@ -8,7 +8,7 @@ use App\Admin\Account\Loans;
 use App\Admin\Account\Deposits;
 use App\Admin\Account\Accounts;
 use App\Admin\Account\PaymentTypes;
-
+use Phanna\Converter\KhmerDatetime;
 class PaymentTransactions extends Model
 {
     //table mapping
@@ -61,4 +61,13 @@ class PaymentTransactions extends Model
 
 
     // ###################end relationship#####################################
+
+    // ########################Accessors and Mutators#########################
+    // get payment date
+    public function getPaymentDateAttribute($value){
+      $date=$value;
+      $khmer=new KhmerDatetime($date);
+      $value=$khmer->getFullDay().'-'.$khmer->getFullMonth().'-'.$khmer->getFullYear();
+      return $value;
+    }
 }

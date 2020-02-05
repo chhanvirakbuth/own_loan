@@ -54,7 +54,7 @@
                     width: 100%;">
 
                 </div>
-                <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 280px; max-height: 150px; border-radius: 50%;"></div>
+                <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 150px; max-height: 150px; border-radius: 50%;"></div>
                 <div class="text-center">
                     <span  class="btn btn-light waves-effect waves-light btn-file"><span class="fileinput-new"><a>រើសរូបភាព</a></span><span class="fileinput-exists"><a>ប្ដូររូបភាព</a></span><input type="file" name="images"></span>
                     <a href="#" class="btn btn-light waves-effect waves-light fileinput-exists" data-dismiss="fileinput">លុបចេញ</a>

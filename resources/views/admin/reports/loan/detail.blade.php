@@ -1,6 +1,6 @@
 @extends('layouts.admin-menu')
 @section('title')
-  របាយការណ៍កម្ចីទាំងអស់
+  ប្រវិត្តការបង់-{{$loan->people->name_kh}}
 @endsection
 @section('custom-css')
   <link rel="stylesheet" href="{{asset('assets/css/custom-css.css')}}">
@@ -23,6 +23,7 @@
 @section('content')
   <div class="card">
             <div class="card-body">
+              <h5 class="card-title btn btn-sm btn-info" onclick="history.back()" style="cursor:pointer;"><i class="fa fa-arrow-left"></i> ថយក្រោយ</h5>
               <h5 class="card-title">ប្រវិត្តការបង់ប្រាក់របស់ <span class="text text-warning">{{$loan->people->name_kh}}</span></h5>
               <div class="table-responsive">
                 <table class="table table-hover">
@@ -46,17 +47,19 @@
                       @foreach ($transactions as $key => $value)
                         <tr>
                           <td class="text text-left">លើកទី <?php echo $i;?></td>
-                          <td class="text text-left">{{$khmer->getFullDay($value->payment_date).'-'.$khmer->getFullMonth($value->payment_date).'-'.$khmer->getFullYear($value->payment_date)}}</td>
+                          <td class="text text-left">{{$value->payment_date}}</td>
                           <td class="text text-left">{{$value->payment_type}}</td>
                           <td class="text text-left">
                             @if ($value->payment_type_id == 1)
-                              {{number_format($value->amount)}}
+                              <span class="badge badge-warning badge-pill">{{number_format($value->amount)}}
+
                             @else
-                              {{number_format($value->begin_amount)}}
+                              <span class="badge badge-warning badge-pill">{{number_format($value->begin_amount)}}
                             @endif
-                           ៛</td>
-                          <td class="text text-left">{{number_format($value->amount)}} ៛</td>
-                          <td class="text text-left">{{number_format($value->balance)}} ៛</td>
+                            ៛</span>
+                           </td>
+                          <td class="text text-left"><span class="badge badge-success badge-pill">{{number_format($value->amount)}} ៛</span></td>
+                          <td class="text text-left"><span class="badge badge-danger badge-pill">{{number_format($value->balance)}} ៛</span></td>
                           <td class="text text-left text-uppercase">{{Auth::user($value->created_by)->name}}</td>
                         </tr>
                         @php

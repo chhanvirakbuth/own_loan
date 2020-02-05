@@ -139,7 +139,7 @@ $().ready(function() {
              },
              id_card_number:{
                  required: true,
-                 digits: true
+                 digits: false
              },
              status:{
                  valueNotEquals: "default"
@@ -203,7 +203,7 @@ $().ready(function() {
          }
      });
 
-     
+
     // date picker
     $("#birth_of_date, #start_at").flatpickr();
 

@@ -10,6 +10,13 @@ class User extends Authenticatable
 {
     use Notifiable;
 
+    const ADMIN = 1;
+    const DEFAULT = 0;
+
+    public function isAdmin()    {
+        return $this->type === self::ADMIN;
+    }
+
     /**
      * The attributes that are mass assignable.
      *

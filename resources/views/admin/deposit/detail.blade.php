@@ -25,6 +25,7 @@
 @endsection
 
 @section('content')
+  <a onclick="history.back()" class="btn btn-sm btn-info mb-3" style="cursor:pointer;"><i class="fa fa-mail-reply"></i> ថយក្រោយ</a>
   <div class="card">
         <div class="card-body">
           {{-- show validation error --}}
@@ -166,12 +167,13 @@
             </h4>
 
             <div class="form-group row">
-                <label for="input-16" class="col-sm-2 col-form-label">រូបបុគ្គលអ្នកសន្សំ</label>
+                <label for="input-16" class="col-sm-2 col-form-label">រូបបុគ្គលអ្នកខ្ចី</label>
                 <div class="col-sm-4">
                 <div class="fileinput fileinput-new" data-provides="fileinput">
-                    <div class="fileinput-new thumbnail" style="max-width: 280px; max-height: 100%;">
-                        <img src="{{asset($deposit->people->avatar)}}" alt="Photo" class="image_center">
+                    <div class="fileinput-new thumbnail" style="width: 100%; height: 150px;">
+                        <img src="{{asset($deposit->people->avatar)}}" alt="Photo">
                     </div>
+                    <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 100%; max-height: 100%;"></div>
 
                 </div>
                 </div>
@@ -179,9 +181,10 @@
                 <label for="input-17" class="col-sm-2 col-form-label">រូបអត្តសញ្ញាណប័ណ្ណ</label>
                 <div class="col-sm-4">
                     <div class="fileinput fileinput-new" data-provides="fileinput">
-                        <div class="fileinput-new thumbnail" style="max-width: 280px; max-height: 100%;">
-                            <img src="{{asset($deposit->people->idcard)}}" alt="Photo" class="image_center">
+                        <div class="fileinput-new thumbnail" style="width: 280px; height: 150px;">
+                            <img src="{{asset($deposit->people->idcard)}}" alt="Photo">
                         </div>
+                        <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 280px; max-height: 150px;"></div>
                         
                     </div>
                 </div>
@@ -219,13 +222,6 @@
                     <input type="text" class="form-control" id="start_at" name="start_at" placeholder="រើសថ្ងៃខ្ចី"
                     value="{{$deposit->started_at}}" disabled>
                 </div>
-            </div>
-
-
-
-            <div class="form-footer​">
-                <a onclick="history.back();" class="btn btn-light waves-effect waves-light mx-2"><i class="zmdi zmdi-arrow-left"></i> ថយក្រោយ</a>
-                <a href="#" class="btn btn-light waves-effect waves-light mx-2"> ស្នើរសុំ​ <i class="zmdi zmdi-arrow-right"></i></a>
             </div>
           </form>
         </div>

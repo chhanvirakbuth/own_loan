@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Admin\Reports;
-use Phanna\Converter\KhmerDatetime;
+
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -23,21 +23,32 @@ class LoanReportController extends Controller
     // show all loan report
     public function index(){
       $theme=Theme::findOrFail(1);
-      $date=date('y-m-d');
-      $khmer = new KhmerDatetime($date);
       $loans=Loans::paginate(15);
       return view('admin.reports.loan.index')->with('theme',$theme)
-      ->with('loans',$loans)->with('khmer',$khmer);
+      ->with('loans',$loans);
     }
     // show detail of each reports
     public function detail($id){
       $theme=Theme::findOrFail(1);
-      $date=date('y-m-d');
-      $khmer = new KhmerDatetime($date);
       $loan=Loans::findOrFail($id);
       $transactions=PaymentTransactions::where('loan_id',$id)->orderBy('id', 'ASC')->get();
       return view('admin.reports.loan.detail')->with('theme',$theme)
-      ->with('transactions',$transactions)->with('khmer',$khmer)
+      ->with('transactions',$transactions)
       ->with('loan',$loan);
+    }
+
+    // show all loaner
+    public function loaner(){
+      $theme=Theme::findOrFail(1);
+      $loans=Loans::paginate(15);
+      return view('admin.reports.loan.loaner')->with('theme',$theme)
+      ->with('loans',$loans);
+    }
+
+    public function softDelete($id){
+      $loan=Loans::findOrFail($id);
+      $loan->delete();
+      Session::flash('success','គណនីនេះបានដាក់ក្នុងធុងសម្រាម!');
+      return redirect()->back();
     }
 }

@@ -9,6 +9,8 @@ use App\Admin\Account\AccountTypeItems;
 use App\Admin\Account\PaymentTransactions;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
+use Phanna\Converter\KhmerDatetime;
+
 class Loans extends Model
 {
     use SoftDeletes ;
@@ -37,8 +39,8 @@ class Loans extends Model
     'created_at',
     'updated_at',
     'deleted_at',
-    'last_paid_interest_at'
-        // your other new column
+    'created_at'
+
     ];
     // #########################relationship#################################
       // belongsTo people one to many
@@ -63,8 +65,8 @@ class Loans extends Model
       // #####################end relationship###############################
       // Accessors & Mutators
       public function getStatusAttribute($value){
-        $now=Carbon::now();
-        $last_paid=$this->last_paid_interest_at;
+        $now=Carbon::now('GMT+7');
+        $last_paid=$this->getOriginal('last_paid_interest_at');
         if ( !empty ( $last_paid ) ) {
           $year=Carbon::parse($last_paid)->year;
           $month=Carbon::parse($last_paid)->month;
@@ -88,4 +90,25 @@ class Loans extends Model
         }
         return $value;
       }
+
+      // get started at
+      public function getStartedAtAttribute($value){
+        $date=$value;
+        $khmer=new KhmerDatetime($date);
+        $value=$khmer->getFullDay().'-'.$khmer->getFullMonth().'-'.$khmer->getFullYear();
+        return $value;
+      }
+      // get last paid at
+      public function getLastPaidInterestAtAttribute($value)
+      {
+        if ($value == null) {
+          return $value='<span class="badge badge-warning">មិនទាន់មាន</span>';
+        }
+        $date=$value;
+        $khmer=new KhmerDatetime($date);
+        $value=$khmer->getFullDay().'-'.$khmer->getFullMonth().'-'.$khmer->getFullYear();
+        return $value;
+      }
+
+
 }

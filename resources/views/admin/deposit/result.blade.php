@@ -22,14 +22,15 @@
   <button class="btn btn-sm btn-info mb-2"type="button" name="button" onclick="history.back()"><i class="fa fa-mail-reply"></i> ថយក្រោយវិញ</button>
 <div class="card">
   <div class="card-body">
-      <h4 class="text text-center my3" style="font-size:15px;">គណនីសន្សំ {{$deposit->people->name_kh}}</h4>
+
+      <h4 class="text text-center my3" style="font-size:15px;">គណនីសន្សំ {{$account->people->name_kh}}</h4>
       <div class="row mt-3">
       <div class="col-12 col-lg-6 col-xl-4">
         <div class="card gradient-blooker inside_card">
         <div class="card-body">
             <p class="text-white mb-0"><a>ប្រាក់សន្សំសរុប</a> <span class="float-right badge badge-light"><a>ទាំងអស់</a></span></p>
              <div class="">
-             <h4 class="mb-0 py-3">{{number_format($deposit->balance)}} ៛ <span class="float-right"><i class="fa fa-cc"></i></span></h4>
+             <h4 class="mb-0 py-3">{{number_format($account->people->deposits[0]->balance)}} ៛ <span class="float-right"><i class="fa fa-cc"></i></span></h4>
              </div>
           </div>
         </div>
@@ -41,7 +42,7 @@
         <div class="card-body">
             <p class="text-white mb-0"><a>ប្រាក់សន្សំលើកមុន</a> <span class="float-right badge badge-light"><a>សរុប</a></span></p>
              <div class="">
-             <h4 class="mb-0 py-3">{{number_format($transaction[0]->amount)}} ៛<span class="float-right"><i class="fa fa-money"></i></span></h4>
+             <h4 class="mb-0 py-3">{{number_format($transaction->amount)}} ៛<span class="float-right"><i class="fa fa-money"></i></span></h4>
              </div>
           </div>
         </div>
@@ -52,7 +53,7 @@
         <div class="card-body">
             <p class="text-white mb-0"><a>ការប្រាក់ទទួល</a> <span class="float-right badge badge-light"><a>សរុប</a></span></p>
              <div class="">
-             <h4 class="mb-0 py-3">{{number_format(($deposit->balance) * $deposit->interest_rate)}} ៛<span class="float-right"><i class="fa fa-plus"></i></span></h4>
+             <h4 class="mb-0 py-3">{{number_format(($account->people->deposits[0]->balance) * $account->people->deposits[0]->interest_rate)}} ៛<span class="float-right"><i class="fa fa-plus"></i></span></h4>
              </div>
           </div>
         </div>
@@ -60,7 +61,7 @@
 
      </div>
 
-    <form action="" method="post" id="submit_form">
+    <form action="{{route('deposit.save',$account->account_no)}}" method="post" id="submit_form">
       @csrf
       @method('put')
       <div class="input-group">
@@ -79,7 +80,7 @@
         </div>
       </div>
     </form>
-
+    
   </div>
 </div>
 @endsection

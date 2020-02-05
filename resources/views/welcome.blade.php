@@ -59,7 +59,11 @@ https://templatemo.com/tm-535-softy-pinko
                             <li><a href="#blog">Blog Entries</a></li>
                             <li><a href="#contact-us">Contact Us</a></li>
                             @if (Auth::check())
-                              <li><a href="{{route('admin.home')}}">Admin</a></li>
+                              @if (Auth::user()->isAdmin)
+                                <li><a href="{{route('admin.home')}}">Admin</a></li>
+                              @else
+                                <li><a href="{{route('login')}}">Profile</a></li>
+                              @endif
                             @else
                               <li><a href="{{route('login')}}">Login</a></li>
                             @endif

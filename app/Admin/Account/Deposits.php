@@ -9,6 +9,8 @@ use App\Admin\Customer\People;
 use App\Admin\Account\Accounts;
 use App\Admin\Account\AccountTypeItems;
 
+use Carbon\Carbon;
+
 class Deposits extends Model
 {
     //table mapping
@@ -55,4 +57,25 @@ class Deposits extends Model
       return $this->belongsTo(AccountTypeItems::class);
     }
     // ####################end relationship :( ##############################
+
+    // ####################start Accessor :) ##############################
+    public function getStatusAttribute($value){
+      $now=Carbon::now('GMT+7');
+      $last_paid=$this->getOriginal('last_paid_interest_at');
+      if ( !empty ( $last_paid ) ) {
+        $year=Carbon::parse($last_paid)->year;
+        $month=Carbon::parse($last_paid)->month;
+        if ($now->subMonth()->month ==$month) {
+          if ($this->balance == 0) {
+            return $value=false;
+          }
+          return $value=true;
+        }else {
+          return $value=false;
+        }
+      }
+
+      return $value;
+
+    }
 }

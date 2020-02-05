@@ -9,7 +9,8 @@
 
   {{-- date picker (flatpickr) --}}
   <link rel="stylesheet" href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
-
+  {{-- autonumeric --}}
+  <script src="https://cdn.jsdelivr.net/npm/autonumeric@4.1.0"></script>
 @endsection
 
 @section('content')
@@ -108,7 +109,6 @@
                 <div class="col-sm-4">
                     <select class="form-control" id="status" name="status">
                         <option value="default">--សូមជ្រើសរើសស្ថានភាព--</option>
-                        {{-- <option selected value="{{$loans->people->status->id}}">{{$loans->people->status->name_kh}}</option> --}}
                         @foreach ($statuses as $key => $value)
                           <option value="{{$value->id}}" @if ($value->id == $loans->people->status->id)
                             selected
@@ -141,7 +141,6 @@
                 <div class="col-sm-4">
                     <select class="form-control" id="provinces" name="provinces">
                         <option  value="default">--រើសខេត្ត--</option>
-                        {{-- <option value="{{$loans->people->province->id}}">{{$loans->people->province->name_kh}}</option> --}}
                         @foreach ($provinces as $key => $value)
                           <option value="{{$value->id}}" @if ($value->id == $loans->people->province->id)
                             selected
@@ -152,7 +151,6 @@
                 <label for="input-12" class="col-sm-2 col-form-label">ស្រុក/ខណ្ឌ</label>
                 <div class="col-sm-4">
                     <select class="form-control" id="districts" name="districts">
-                      {{-- <option selected value="{{$loans->people->district->id}}">{{$loans->people->district->name_kh}}</option> --}}
                       @foreach ($districts as $key => $value)
                         <option value="{{$value->id}}" @if ($value->id == $loans->people->district->id)
                           selected
@@ -166,7 +164,6 @@
                 <label for="input-13" class="col-sm-2 col-form-label">ឃុំ/សង្កាត់</label>
                 <div class="col-sm-4">
                     <select class="form-control" id="communes" name="communes">
-                      {{-- <option selected value="{{$loans->people->commune->id}}">{{$loans->people->commune->name_kh}}</option> --}}
                       @foreach ($communes as $key => $value)
                         <option value="{{$value->id}}" @if ($value->id == $loans->people->commune->id)
                           selected
@@ -177,7 +174,6 @@
                 <label for="input-15" class="col-sm-2 col-form-label">ភូមិ</label>
                 <div class="col-sm-4">
                     <select class="form-control" id="villages" name="villages">
-                      {{-- <option selected value="{{$loans->people->village->id}}">{{$loans->people->village->name_kh}}</option> --}}
                       @foreach ($villages as $key => $value)
                         <option value="{{$value->id}}" @if ($value->id == $loans->people->village->id)
                           selected
@@ -232,7 +228,6 @@
                 <div class="col-sm-4">
                     <select class="form-control" id="loan_type" name="loan_type">
                         <option value="default">--រើសប្រភេទកម្ចី--</option>
-                        {{-- <option selected value="{{$loans->account_type_item->id}}">{{$loans->account_type_item->name_kh}}</option> --}}
                         @foreach ($account_type_items as $key => $value)
                           <option value="{{$value->id}}" @if ($value->id == $loans->account_type_item->id)
                             selected
@@ -251,7 +246,7 @@
             <div class="form-group row">
                 <label for="input-20" class="col-sm-2 col-form-label">ចំនួនប្រាក់កម្ចី</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control" placeholder="1,000,000" name="begin_amount" id="begin_amount"
+                    <input type="text" class="form-control myInput" placeholder="1,000,000" name="begin_amount" id="begin_amount"
                     value="{{$loans->begin_amount}}">
                 </div>
                 <label for="input-21" class="col-sm-2 col-form-label">មូលហេតុការខ្ចី</label>
@@ -265,7 +260,7 @@
                 <label for="input-22" class="col-sm-2 col-form-label">ខ្ចីនៅថ្ងៃ</label>
                 <div class="col-sm-4">
                     <input type="text" class="form-control" id="start_at" name="start_at" placeholder="រើសថ្ងៃខ្ចី"
-                    value="{{$loans->started_at}}">
+                    value="{{$loans->getOriginal('started_at')}}">
                 </div>
                 <label for="input-23" class="col-sm-2 col-form-label">ប្រាក់នៅជំពាក់</label>
                 <div class="col-sm-4">
@@ -297,23 +292,14 @@
 
   {{-- date picker --}}
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-  {{-- autoNumeric //currency format --}}
-  {{-- autoNumeric --}}
-  <script src="https://cdn.jsdelivr.net/autonumeric/2.0.0/autoNumeric.min.js"></script>
-  {{-- <script type="text/javascript">
-    jQuery(function($) {
-      $('#begin_amount').autoNumeric('init',{
-          currencySymbol: "៛",
-          currencySymbolPlacement: "s",
-          unformatOnSubmit: true
-      });
 
-      $('#balance').autoNumeric({
-        currencySymbol: "៛",
-        currencySymbolPlacement: "s",
-        unformatOnSubmit: true
-      });
+  <script>
+    new AutoNumeric('.myInput', {
+      decimalPlaces: 0,
+      currencySymbol: "៛",
+      currencySymbolPlacement: "s",
+      unformatOnSubmit: true
 
-    });
-  </script> --}}
+     });
+  </script>
 @endsection

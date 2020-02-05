@@ -40,17 +40,17 @@
             <div class="form-group row">
               <label for="input-1" class="col-sm-2 col-form-label">ឈ្មោះពេញ</label>
               <div class="col-sm-4">
-                <input type="text" class="form-control" id="input-1" name="full_name" placeholder="ជាអក្សរខ្មែរ">
+                <input type="text" class="form-control" id="input-1" name="full_name" placeholder="ជាអក្សរខ្មែរ" autocomplete="off">
               </div>
               <label for="input-2" class="col-sm-2 col-form-label">ឈ្មោះឡាតាំង</label>
               <div class="col-sm-4">
-                <input type="text" class="form-control text text-uppercase" id="latin_name" name="latin_name" placeholder="ជាអក្សរឡាតាំង">
+                <input type="text" class="form-control text text-uppercase" id="latin_name" name="latin_name" placeholder="ជាអក្សរឡាតាំង" autocomplete="off">
               </div>
             </div>
             <div class="form-group row">
               <label for="input-3" class="col-sm-2 col-form-label">ឈ្មោះហៅក្រៅ</label>
               <div class="col-sm-4">
-                <input type="text" class="form-control" id="input-3" name="nickname" placeholder="បើសិនជាមាន">
+                <input type="text" class="form-control" id="input-3" name="nickname" placeholder="បើសិនជាមាន" autocomplete="off">
               </div>
               <label for="input-4" class="col-sm-2 col-form-label">ភេទ</label>
                 <div class="icheck-material-primary icheck-inline">
@@ -101,7 +101,7 @@
             <div class="form-group row">
               <label for="input-9" class="col-sm-2 col-form-label">លេខទូរស័ព្ទផ្ទាល់ខ្លួន</label>
               <div class="col-sm-4">
-                <input type="text" class="form-control input-phone" id="your_phone_number" name="your_phone_number">
+                <input type="text" class="form-control input-phone" id="your_phone_number" name="your_phone_number" autocomplete="off">
               </div>
               <label for="input-10" class="col-sm-2 col-form-label">អ៊ីម៉ែល</label>
               <div class="col-sm-4">
@@ -202,7 +202,7 @@
             <div class="form-group row">
                 <label for="input-20" class="col-sm-2 col-form-label">ចំនួនប្រាក់សន្សំ</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control myInput" placeholder="1,000,000" name="begin_amount" id="begin_amount">
+                    <input type="text" class="form-control myInput" placeholder="1,000,000" name="begin_amount" id="begin_amount" autocomplete="off">
                 </div>
                 <label for="input-22" class="col-sm-2 col-form-label">ថ្ងៃសន្សំ</label>
                 <div class="col-sm-4">

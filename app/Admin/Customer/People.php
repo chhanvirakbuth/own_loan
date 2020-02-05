@@ -115,20 +115,16 @@ class People extends Model
     // accessor
     // get nick name
     public function getNickNameAttribute($value){
-      if ($value == null) {
-        return ('គ្មានទេ ');
-      } else {
+
         return ($value);
-      }
+
     }
 
     // get id card
     public function getIdCardNumberAttribute($value){
-      if ($value == null) {
-        return('មិនបានបញ្ចូល');
-      } else {
+
         return $value;
-      }
+
     }
 
     // get statuses
@@ -143,11 +139,9 @@ class People extends Model
 
     // get phone email
     public function getEmailAttribute($value){
-      if ($value == null) {
-        return ('អត់មាន');
-      } else {
+
         return $value;
-      }
+
     }
 
     // get avatar

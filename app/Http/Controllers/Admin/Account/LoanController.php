@@ -12,6 +12,7 @@ use App\Enums\AccountEnum;
 use App\Enums\GenderEnum;
 use App\Enums\StatusEnum;
 use App\Enums\LoanStatusEnum;
+use App\Enums\PaymentTypeEnum;
 
 use App\Admin\Address\Provinces;
 use App\Admin\Address\Districts;
@@ -28,6 +29,7 @@ use App\Admin\Account\Accounts;
 use App\Admin\Account\AccountTypeItems;
 use App\Admin\Account\Loans;
 use App\Admin\Account\PaymentTypes;
+use App\Admin\Account\PaymentTransactions;
 
 use App\Admin\App\Theme;
 
@@ -45,11 +47,8 @@ class LoanController extends Controller
     //
     public function index(){
       $theme=Theme::findOrFail(1);
-      $date=date('y-m-d');
-      $khmer = new KhmerDatetime($date);
       $loans=Loans::where('balance','!=' , 0)->paginate(15);
-      return view('admin.loan.index')->with('loans',$loans)->with('theme',$theme)
-      ->with('khmer',$khmer);
+      return view('admin.loan.index')->with('loans',$loans)->with('theme',$theme);
     }
     // show unpaid customer
     public function unpaid(){
@@ -62,6 +61,16 @@ class LoanController extends Controller
     }
     // show create loan form
     public function create(){
+      // find out all the total money
+      $transaction=PaymentTransactions::sum('amount'); //it the income
+      $total_withdraw=PaymentTransactions::where('payment_type_id',PaymentTypeEnum::WITHDRAW)->sum('balance');
+      $loan=Loans::sum('begin_amount');
+      $left_amount=$transaction-$loan - $total_withdraw;
+      if ($left_amount == null) {
+        Session::flash('error','មិនមានប្រាក់សម្រាប់ផ្ដល់កម្ចី');
+        return redirect()->back();
+      }
+      // end of checking condition
       $provinces=Provinces::where('actived',1)->get();
       $occupations=Occupations::where('actived',1)->get();
       $statuses=Statuses::all();
@@ -75,126 +84,135 @@ class LoanController extends Controller
 
     // store method
     public function store(Request $request){
-      // dd($request->all());
-      // Session::flash('success','ការស្នើរសុំបានជោគជ័យ');
-      // return redirect(route('admin.loan.index'));
-      // exit;
+      // check validation
+      $this->validate($request,[
+        'full_name'=>'required|max:50',
+        'latin_name'=>'nullable|max:50',
+        'nickname'=>'nullable|max:50',
+        'inlineradio'=>'required|integer|exists:cts_genders,id',
+        'occupation'=>'required|integer|exists:cts_occupations,id',
+        'birth_of_date'=>'required|date_format:Y-m-d',
+        'id_card_number'=>'required|max:50',
+        'status'=>'required|max:255',
+        'your_phone_number'=>'required|max:15',
+        'email'=>'nullable|email|max:50',
+        'provinces'=>'required|integer|exists:adr_provinces,id',
+        'districts'=>'required|integer|exists:adr_districts,id',
+        'communes'=>'required|integer|exists:adr_communes,id',
+        'villages'=>'required|integer|exists:adr_villages,id',
+        'avatar'=>'nullable|max:10240',
+        'id_card'=>'nullable|max:10240',
+        'loan_type'=>'required|integer|exists:acc_account_type_items,id',
+        'percent_rate'=>'required',
+        'begin_amount'=>'required|max:10',
+        'reason'=>'required|max:255',
+        'start_at'=>'required|date_format:Y-m-d',
+        'close_at'=>'nullable|date_format:Y-m-d'
+      ]);
+      // end check validation
+      $request_loan=$request->begin_amount;
+      // find out all the total money
+      $transaction=PaymentTransactions::sum('amount'); //it the income
+      $total_withdraw=PaymentTransactions::where('payment_type_id',PaymentTypeEnum::WITHDRAW)->sum('balance');
+      $loan=Loans::sum('begin_amount');
+      $left_amount=$transaction-$loan - $total_withdraw;
+      // check condition
+      if ($left_amount < $request_loan) {
+        Session::flash('error','លុយមិនគ្រប់សម្រាប់ផ្ដល់កម្ចី!');
+        return redirect()->back();
+      } else {
+        // loan process
+        try {
+          DB::beginTransaction();
+          $account_type_id=AccountEnum::LOAN;
+          $accountTypeItemId=$request->loan_type;
+          $startAt=$request->start_at;
+          $beginAmount=$request->begin_amount;
+          $rate=AccountTypeItems::findOrFail($accountTypeItemId);
 
-      try {
-        DB::beginTransaction();
-        // check validation
-        $this->validate($request,[
-          'full_name'=>'required|max:50',
-          'latin_name'=>'nullable|max:50',
-          'nickname'=>'nullable|max:50',
-          'inlineradio'=>'required|integer|exists:cts_genders,id',
-          'occupation'=>'required|integer|exists:cts_occupations,id',
-          'birth_of_date'=>'required|date_format:Y-m-d',
-          'id_card_number'=>'required|max:50',
-          'status'=>'required|max:255',
-          'your_phone_number'=>'required|max:15',
-          'email'=>'nullable|email|max:50',
-          'provinces'=>'required|integer|exists:adr_provinces,id',
-          'districts'=>'required|integer|exists:adr_districts,id',
-          'communes'=>'required|integer|exists:adr_communes,id',
-          'villages'=>'required|integer|exists:adr_villages,id',
-          'avatar'=>'nullable|max:10240',
-          'id_card'=>'nullable|max:10240',
-          'loan_type'=>'required|integer|exists:acc_account_type_items,id',
-          'percent_rate'=>'required',
-          'begin_amount'=>'required|max:10',
-          'reason'=>'required|max:255',
-          'start_at'=>'required|date_format:Y-m-d',
-          'close_at'=>'nullable|date_format:Y-m-d'
-        ]);
+          // let insert to Database
+            $user = Auth::user();
+            // to table people
+          $people=new People();
+          $people->gender_id=$request->inlineradio;
+          $people->occupation_id=$request->occupation;
+          $people->province_id=$request->provinces;
+          $people->district_id=$request->districts;
+          $people->commune_id=$request->communes;
+          $people->village_id=$request->villages;
+          $people->name_kh=$request->full_name;
+          $people->name_en=$request->latin_name;
+          $people->nick_name=$request->nickname;
+          $people->date_of_birth=$request->birth_of_date;
+          $people->phone_no=$request->your_phone_number;
+          $people->id_card_number=$request->id_card_number;
+          $people->email=$request->email;
+          $people->status_id=$request->status;
+          $people->actived=StatusEnum::ACTIVE;
+          $people->created_by=$user->id;
+            // check if has file then upload'to images table
+          if($request->hasFile('avatar')){ //store to table people at avatar field
+            $people->avatar = $request->file('avatar')->store('avatars');
 
-        // end check validation
-        $account_type_id=AccountEnum::LOAN;
-        $accountTypeItemId=$request->loan_type;
-        $startAt=$request->start_at;
-        $beginAmount=$request->begin_amount;
-        $rate=AccountTypeItems::findOrFail($accountTypeItemId);
+          }
+          // if has id card
+          if ($request->hasFile('id_card')) {
+            $people->idcard=$request->file('id_card')->store('idcards');
+          }
+          $people->save();
+          $last_people_id=$people->id;
 
-        // let insert to Database
-          $user = Auth::user();
-          // to table people
-        $people=new People();
-        $people->gender_id=$request->inlineradio;
-        $people->occupation_id=$request->occupation;
-        $people->province_id=$request->provinces;
-        $people->district_id=$request->districts;
-        $people->commune_id=$request->communes;
-        $people->village_id=$request->villages;
-        $people->name_kh=$request->full_name;
-        $people->name_en=$request->latin_name;
-        $people->nick_name=$request->nickname;
-        $people->date_of_birth=$request->birth_of_date;
-        $people->phone_no=$request->your_phone_number;
-        $people->id_card_number=$request->id_card_number;
-        $people->email=$request->email;
-        $people->status_id=$request->status;
-        $people->actived=StatusEnum::ACTIVE;
-        $people->created_by=$user->id;
-          // check if has file then upload'to images table
-        if($request->hasFile('avatar')){ //store to table people at avatar field
-          $people->avatar = $request->file('avatar')->store('avatars');
+             // to table reason
+          $reasons=new Reason();
+          $reasons->people_id=$last_people_id;
+          $reasons->title=$request->reason;
+          $reasons->save();
 
+            //to table account
+          $account =new Accounts() ;
+          $account->people_id=$last_people_id;
+          $account->account_type_id=$account_type_id;
+          $account->account_type_item_id=$accountTypeItemId;
+          $code=mt_rand(00000000, 99999999);
+          if (Accounts::where('account_no', '=', $code)->count() > 0) {
+            // found...
+            $new_code=mt_rand(00000000, 99999999);
+            $account->account_no=$new_code;
+          } else {
+            // note found...
+            $account->account_no=$code;
+          }
+          $account->actived=StatusEnum::ACTIVE;
+          $account->status=StatusEnum::ACTIVE;
+          $account->created_by=$user->id;
+          $account->save();
+          $last_account_id=$account->id;
+          //
+             //to table loans
+
+          $loans=new Loans();
+          $loans->people_id=$last_people_id;
+          $loans->account_id=$last_account_id;
+          $loans->status=StatusEnum::ACTIVE;
+          $loans->account_type_item_id=$accountTypeItemId;
+          $loans->started_at=$startAt;
+          $loans->closed_at=$request->close_at;
+          $loans->begin_amount=$beginAmount;
+          $loans->balance=$beginAmount;
+          $loans->interest_rate=$rate->interest_rate;
+          $loans->created_by=$user->id;
+          $loans->save();
+
+          DB::commit();
+          Session::flash('success','ការស្នើរសុំបានជោគជ័យ');
+          return redirect(route('admin.loan.index'));
+        } catch (Exception $e) {
+          DB::rollBack();
+          Session::flash('error','ការស្នើរសុំបានបរាជ័យ');
         }
-        // if has id card
-        if ($request->hasFile('id_card')) {
-          $people->idcard=$request->file('id_card')->store('idcards');
-        }
-        $people->save();
-        $last_people_id=$people->id;
-
-           // to table reason
-        $reasons=new Reason();
-        $reasons->people_id=$last_people_id;
-        $reasons->title=$request->reason;
-        $reasons->save();
-
-          //to table account
-        $account =new Accounts() ;
-        $account->people_id=$last_people_id;
-        $account->account_type_id=$account_type_id;
-        $account->account_type_item_id=$accountTypeItemId;
-        $code=mt_rand(00000000, 99999999);
-        if (Accounts::where('account_no', '=', $code)->count() > 0) {
-          // found...
-          $new_code=mt_rand(00000000, 99999999);
-          $account->account_no=$new_code;
-        } else {
-          // note found...
-          $account->account_no=$code;
-        }
-        $account->actived=StatusEnum::ACTIVE;
-        $account->status=StatusEnum::ACTIVE;
-        $account->created_by=$user->id;
-        $account->save();
-        $last_account_id=$account->id;
-        //
-           //to table loans
-
-        $loans=new Loans();
-        $loans->people_id=$last_people_id;
-        $loans->account_id=$last_account_id;
-        $loans->status=StatusEnum::ACTIVE;
-        $loans->account_type_item_id=$accountTypeItemId;
-        $loans->started_at=$startAt;
-        $loans->closed_at=$request->close_at;
-        $loans->begin_amount=$beginAmount;
-        $loans->balance=$beginAmount;
-        $loans->interest_rate=$rate->interest_rate;
-        $loans->created_by=$user->id;
-        $loans->save();
-
-        DB::commit();
-        Session::flash('success','ការស្នើរសុំបានជោគជ័យ');
-        return redirect(route('admin.loan.index'));
-      } catch (Exception $e) {
-        DB::rollback();
-        Session::flash('error','ការស្នើរសុំបានបរាជ័យ');
       }
+
+
 
     }
 
