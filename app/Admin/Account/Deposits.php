@@ -10,7 +10,7 @@ use App\Admin\Account\Accounts;
 use App\Admin\Account\AccountTypeItems;
 
 use Carbon\Carbon;
-
+use Phanna\Converter\KhmerDatetime;
 class Deposits extends Model
 {
     //table mapping
@@ -77,5 +77,16 @@ class Deposits extends Model
 
       return $value;
 
+    }
+
+    // ############# get update at format to khmer date
+    public function getUpdatedAtAttribute($value){
+      if ($value == null) {
+        return $value='<span class="badge badge-warning">មិនទាន់មាន</span>';
+      }
+      $date=$value;
+      $khmer=new KhmerDatetime($date);
+      $value=$khmer->getFullDay().'-'.$khmer->getFullMonth().'-'.$khmer->getFullYear();
+      return $value;
     }
 }

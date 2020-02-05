@@ -1,6 +1,6 @@
 @extends('layouts.admin-menu')
 @section('title')
-  ដកប្រាក់ - {{$account->people->name_kh}}
+  ដកប្រាក់ - {{$deposit->people->name_kh}}
 @endsection
 @section('custom-css')
 
@@ -23,7 +23,7 @@
 <div class="card">
   <div class="card-body">
 
-      <h4 class="text text-center my3" style="font-size:15px;">គណនីសន្សំ {{$account->people->name_kh}}</h4>
+      <h4 class="text text-center my3" style="font-size:15px;">គណនីសន្សំ {{$deposit->people->name_kh}}</h4>
       <div class="row mt-3">
       <div class="col-12 col-lg-6 col-xl-4">
         <div class="card gradient-blooker inside_card">
@@ -42,7 +42,7 @@
         <div class="card-body">
             <p class="text-white mb-0"><a>ប្រាក់សន្សំចុងក្រោយ</a> <span class="float-right badge badge-light"><a>សរុប</a></span></p>
              <div class="">
-             <h4 class="mb-0 py-3">{{number_format($transaction->amount)}} ៛<span class="float-right"><i class="fa fa-money"></i></span></h4>
+             <h4 class="mb-0 py-3">{{number_format($transaction[0]->amount)}} ៛<span class="float-right"><i class="fa fa-money"></i></span></h4>
              </div>
           </div>
         </div>
@@ -53,7 +53,14 @@
         <div class="card-body">
             <p class="text-white mb-0"><a>ការប្រាក់ទទួល</a> <span class="float-right badge badge-light"><a>សរុប</a></span></p>
              <div class="">
-             <h4 class="mb-0 py-3">{{number_format(($account->people->deposits[0]->balance) * $account->people->deposits[0]->interest_rate)}} ៛<span class="float-right"><i class="fa fa-plus"></i></span></h4>
+               <h4 class="mb-0 py-3">@php
+                 $rate=$deposit->interest_rate;
+                 $sum=0;
+                 foreach ($transaction as $key => $value) {
+                   $sum+= $value->balance * $rate;
+                 }
+                 echo number_format($sum);
+               @endphp ៛<span class="float-right"><i class="fa fa-plus"></i></span></h4>
              </div>
           </div>
         </div>

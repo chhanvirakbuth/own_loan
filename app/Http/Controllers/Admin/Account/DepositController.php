@@ -192,8 +192,9 @@ class DepositController extends Controller
       $account=Accounts::where('account_type_id',AccountEnum::DEPOSIT)->where('account_no',$id)->firstOrFail();
       $id=$account->people->deposits[0]->id;
       $deposit=Deposits::findOrFail($id);
-      return view('admin.deposit.detail')
-        ->with('theme',$theme)->with('deposit',$deposit);
+      $transaction=PaymentTransactions::where('account_id',$deposit->account_id)->where('payment_type_id','!=',PaymentTypeEnum::WITHDRAW)->orderBy('id','DESC')->get();
+      return view('admin.deposit.detail')->with('theme',$theme)
+      ->with('deposit',$deposit)->with('transaction',$transaction);
     }
 
 
@@ -330,8 +331,12 @@ class DepositController extends Controller
         Session::flash('warning','មិនមានក្នុងប្រព័ន្ធ!');
         return redirect()->back();
       } else {
-        $transaction=PaymentTransactions::where('account_id',$account->id)->where('payment_type_id','!=',PaymentTypeEnum::WITHDRAW)->orderBy('id','DESC')->first();
-        return view('admin.deposit.result')->with('theme',$theme)->with('account',$account)
+        $id=$account->people->deposits[0]->id;
+        $deposit=Deposits::findOrFail($id);
+        $transaction=PaymentTransactions::where('account_id',$deposit->account->id)
+                    ->where('payment_type_id','!=',PaymentTypeEnum::WITHDRAW)->orderBy('id','DESC')->get();
+        return view('admin.deposit.result')->with('theme',$theme)
+        ->with('deposit',$deposit)->with('account',$account)
         ->with('transaction',$transaction);
       }
       // exit;

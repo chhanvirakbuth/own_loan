@@ -33,7 +33,7 @@
                       <th scope="col">ភេទ</th>
                       <th scope="col">លេខគណនី</th>
                       <th scope="col">សន្សំសរុប</th>
-                      <th scope="col">ការប្រាក់ទទួលបាន</th>
+                      <th scope="col">សន្សំចុងក្រោយ</th>
                       <th scope="col">ស្ថានភាព</th>
                       <th scope="col">ផ្សេងៗ</th>
                     </tr>
@@ -50,7 +50,7 @@
                           <td>{{$deposit->people->gender->name_kh}}</td>
                           <td>{{$deposit->account->account_no}}</td>
                           <td><span class="badge badge-success">{{number_format($deposit->balance)}} &#6107;</span></td>
-                          <td><span​ class="badge badge-warning">{{number_format($deposit->balance * $deposit->interest_rate)}} &#6107;</span></td>
+                          <td>{{$deposit->updated_at}}</td>
                           <td>@if ($deposit->status == true)
                             <i class="zmdi zmdi-close"  data-toggle="tooltip" data-placement="top" title="មិនទាន់សន្សំ"></i>
                           @else

@@ -44,7 +44,7 @@ class PaymentTransactions extends Model
       return $this->belongsTo(Loans::class);
     }
 
-    // belong to deposit
+    // has many deposits
     public function deposit(){
       return $this->belongsTo(Deposits::class);
     }

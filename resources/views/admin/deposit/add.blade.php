@@ -52,7 +52,14 @@
         <div class="card-body">
             <p class="text-white mb-0"><a>ការប្រាក់ទទួល</a> <span class="float-right badge badge-light"><a>សរុប</a></span></p>
              <div class="">
-             <h4 class="mb-0 py-3">{{number_format(($deposit->balance) * $deposit->interest_rate)}} ៛<span class="float-right"><i class="fa fa-plus"></i></span></h4>
+             <h4 class="mb-0 py-3">@php
+               $rate=$deposit->interest_rate;
+               $sum=0;
+               foreach ($transaction as $key => $value) {
+                 $sum+= $value->balance * $rate;
+               }
+               echo number_format($sum);
+             @endphp ៛<span class="float-right"><i class="fa fa-plus"></i></span></h4>
              </div>
           </div>
         </div>
